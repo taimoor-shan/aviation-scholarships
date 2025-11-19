@@ -1,0 +1,200 @@
+/**
+ * Aviation Scholarships - Admin Styles
+ * Version: 1.0.0
+ */
+
+/* CSS Custom Properties - Can be overridden by GeneratePress theme colors */
+:root {
+    --gp-primary-color: #2271b1;
+    --gp-accent-color: #46b450;
+    --gp-text-color: #3c434a;
+    --gp-link-color: #2271b1;
+    --gp-link-hover-color: #135e96;
+    --avs-border-color: #ccd0d4;
+    --avs-bg-light: #f6f7f7;
+}
+
+/* ============================
+   Import Settings Page Styles
+   ============================ */
+
+.avs-section {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid var(--gp-primary-color, var(--avs-border-color));
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.avs-section h2 {
+    margin-top: 0;
+    padding-top: 0;
+    border-bottom: 1px solid var(--gp-primary-color, #eee);
+    padding-bottom: 10px;
+    color: var(--gp-text-color, #3c434a);
+}
+
+.avs-section input[type="url"],
+.avs-section input[type="text"] {
+    padding: 8px 12px;
+}
+
+.avs-section select {
+    min-width: 200px;
+    padding: 6px 10px;
+}
+
+/* Import Summary Notice */
+.avs-import-summary {
+    margin: 15px 0;
+}
+
+.avs-import-summary ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+}
+
+.avs-import-summary ul li {
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+.avs-import-summary ul li:before {
+    content: "✓ ";
+    color: var(--gp-accent-color, #46b450);
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.avs-import-summary details {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-left: 4px solid #d63638;
+}
+
+.avs-import-summary summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #d63638;
+}
+
+.avs-import-summary details ul li:before {
+    content: "⚠ ";
+    color: #d63638;
+}
+
+.avs-import-summary code {
+    font-size: 12px;
+    background: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Webhook URL Display */
+.avs-webhook-code {
+    display: block;
+    padding: 12px;
+    background: var(--avs-bg-light, #f6f7f7);
+    border: 1px solid var(--gp-primary-color, #c3c4c7);
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    word-break: break-all;
+    color: var(--gp-link-color, #2271b1);
+}
+
+/* Import Logs Table */
+.avs-logs-table-wrapper {
+    margin-top: 20px;
+}
+
+.avs-log-level {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.avs-log-level.error {
+    background: #fee;
+    color: #d63638;
+}
+
+.avs-log-level.warning {
+    background: #fef8e7;
+    color: #b47d00;
+}
+
+.avs-log-level.info {
+    background: #e7f7ef;
+    color: var(--gp-accent-color, #2c7c3e);
+}
+
+/* Admin Columns */
+.column-sch_deadline,
+.column-sch_max_amount {
+    width: 12%;
+}
+
+.column-sch_category {
+    width: 15%;
+}
+
+.column-license_type {
+    width: 20%;
+}
+
+.column-sch_eligibility {
+    width: 10%;
+}
+
+/* Filter Dropdowns */
+.tablenav .actions select {
+    margin-right: 5px;
+}
+
+/* ACF Hidden Fields */
+.acf-hidden {
+    display: none !important;
+}
+
+/* Loading State */
+.avs-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.avs-loading:after {
+    content: " ";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--gp-primary-color, #2271b1);
+    border-radius: 50%;
+    animation: avs-spin 1s linear infinite;
+}
+
+@keyframes avs-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 782px) {
+    .avs-section {
+        padding: 15px;
+    }
+    
+    .avs-section input[type="url"],
+    .avs-section input[type="text"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}

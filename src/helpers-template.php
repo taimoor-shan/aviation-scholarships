@@ -4,7 +4,26 @@ namespace Aviation_Scholarships;
 if (!defined('ABSPATH')) exit;
 
 /**
- * Render a single scholarship card (Bootstrap compatible)
+ * Wrapper function to display scholarships in a grid
+ */
+function render_scholarships_grid($scholarship_ids) {
+    if (empty($scholarship_ids)) {
+        return '<p class="avs-no-results">No scholarships found.</p>';
+    }
+
+    ob_start();
+    ?>
+    <div class="avs-scholarships-grid">
+        <?php foreach ($scholarship_ids as $post_id) : ?>
+            <?= render_scholarship_card($post_id); ?>
+        <?php endforeach; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Render a single scholarship card (Modern Apple-inspired UI)
  */
 function render_scholarship_card($post_id) {
 
@@ -19,61 +38,85 @@ function render_scholarship_card($post_id) {
     $category   = wp_get_post_terms($post_id, 'sch_category');
     $licenses   = wp_get_post_terms($post_id, 'license_type');
 
+    // Format deadline
+    $deadline_formatted = $deadline ? date('M j, Y', strtotime($deadline)) : 'N/A';
+
     ob_start();
     ?>
-
-    <div class="card shadow-sm border-0 rounded-3 mb-4 scholarship-card">
-      <div class="card-body p-4">
-
-        <h5 class="card-title mb-2 fw-bold"><?= esc_html($title); ?></h5>
-
-        <div class="mb-3">
+  
+    <article class="avs-scholarship-card">
+        <!-- Header Section -->
+        <div class="avs-card-header">
             <?php if (!empty($category)) : ?>
-                <span class="badge bg-primary me-1"><?= esc_html($category[0]->name); ?></span>
+                <div class="avs-category mb-3">
+                    <span class="avs-category-label"><?= esc_html($category[0]->name); ?></span>
+                </div>
             <?php endif; ?>
-
-            <?php if (!empty($licenses)) :
-                foreach ($licenses as $lic) : ?>
-                    <span class="badge bg-light text-dark border me-1"><?= esc_html($lic->name); ?></span>
-                <?php endforeach;
-            endif; ?>
+            <h3 class="avs-card-title"><?= esc_html($title); ?></h3> 
         </div>
 
-        <div class="d-flex flex-wrap mb-3">
-            <div class="me-4 mb-2">
-                <small class="text-muted d-block">Deadline</small>
-                <span class="fw-semibold"><?= esc_html($deadline); ?></span>
+        <!-- Amount Highlight -->
+        <div class="avs-amount-section">
+            <div class="avs-amount-value">
+                <?php if ($amount) : ?>
+                    <span class="">$</span><?= number_format($amount); ?>
+                <?php else : ?>
+                    <span class="avs-amount-varies">Varies</span>
+                <?php endif; ?>
             </div>
-            <div class="mb-2">
-                <small class="text-muted d-block">Max Amount</small>
-                <span class="fw-semibold">$<?= number_format($amount); ?></span>
-            </div>
+            <div class="avs-amount-label">Maximum Award</div>
         </div>
 
-        <div class="d-flex flex-wrap mb-3">
-            <div class="me-4 mb-2">
-                <small class="text-muted d-block">Awards</small>
-                <span class="fw-semibold"><?= esc_html($awards); ?></span>
+        <!-- Key Details -->
+        <div class="avs-details-grid">
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">Deadline</div>
+                    <div class="avs-detail-value"><?= esc_html($deadline_formatted); ?></div>
+                </div>
             </div>
-            <div class="mb-2">
-                <small class="text-muted d-block">Eligibility</small>
-                <span class="fw-semibold text-capitalize"><?= esc_html($elig); ?></span>
+
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">Eligibility</div>
+                    <div class="avs-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></div>
+                </div>
+            </div>
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">Awards</div>
+                    <div class="avs-detail-value"><?= esc_html($awards ?: '1'); ?></div>
+                </div>
             </div>
         </div>
-
-        <?php if ($location) : ?>
-            <div class="mb-3">
-                <small class="text-muted d-block">Location</small>
-                <span class="fw-semibold"><?= esc_html($location); ?></span>
+        <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">Location</div>
+                    <div class="avs-detail-value"><?= esc_html($location ?: 'Any'); ?></div>
+                </div>
+            </div>
+        <!-- License Types Section -->
+        <?php if (!empty($licenses)) : ?>
+            <div class="avs-licenses-section">
+                <div class="avs-licenses-label">License Types</div>
+                <div class="avs-licenses-list">
+                    <?php foreach ($licenses as $lic) : ?>
+                        <span class="avs-license-tag"><?= esc_html($lic->name); ?></span>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endif; ?>
 
-        <a href="<?= esc_url($link); ?>" target="_blank" class="btn btn-outline-primary btn-sm">
-            Apply Now →
-        </a>
-
-      </div>
-    </div>
+        <!-- Action Button -->
+        <div class="avs-card-footer">
+            <a href="<?= esc_url($link); ?>" target="_blank" rel="noopener noreferrer" class="avs-apply-btn">
+                <span>Apply Now</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 01.5-.5h11.793l-3.147-3.146a.5.5 0 01.708-.708l4 4a.5.5 0 010 .708l-4 4a.5.5 0 01-.708-.708L13.293 8.5H1.5A.5.5 0 011 8z"/>
+                </svg>
+            </a>
+        </div>
+    </article>
 
     <?php
     return ob_get_clean();

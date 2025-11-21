@@ -21,23 +21,17 @@ function shortcode_recent_scholarships($atts) {
     ]);
 
     if (!$query->have_posts()) {
-        return '<p>No scholarships available right now.</p>';
+        return '<p class="avs-no-results">No scholarships available right now.</p>';
     }
 
-    ob_start();
-
-    echo '<div class="row">';
+    // Collect all post IDs
+    $scholarship_ids = [];
     while ($query->have_posts()) {
         $query->the_post();
-        $post_id = get_the_ID();
-
-        echo '<div class="col-md-4">';
-        echo render_scholarship_card($post_id);
-        echo '</div>';
+        $scholarship_ids[] = get_the_ID();
     }
-    echo '</div>';
-
     wp_reset_postdata();
 
-    return ob_get_clean();
+    // Use the grid wrapper function
+    return render_scholarships_grid($scholarship_ids);
 }

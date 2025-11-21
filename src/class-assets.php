@@ -11,6 +11,7 @@ class Assets {
     public static function init() {
         add_action('admin_enqueue_scripts', [__CLASS__, 'enqueue_admin_assets']);
         add_action('admin_head', [__CLASS__, 'inject_dynamic_css']);
+        add_action('wp_enqueue_scripts', [__CLASS__, 'enqueue_frontend_assets']);
     }
 
     /**
@@ -112,6 +113,29 @@ class Assets {
         );
         
         return $plugin_data['Version'] ?? '1.0.0';
+    }
+
+    /**
+     * Enqueue frontend CSS for scholarship cards
+     */
+    public static function enqueue_frontend_assets() {
+        // Only load if we're displaying scholarships
+        // This will load on scholarship archives, single pages, or pages with shortcode
+        if (is_post_type_archive('scholarship') || is_singular('scholarship') || has_shortcode(get_post()->post_content ?? '', 'recent_scholarships')) {
+            $version = '1.0.0';
+            $plugin_url = plugin_dir_url(dirname(__FILE__));
+
+            wp_enqueue_style(
+                'avs-frontend-cards',
+                $plugin_url . 'assets/css/frontend-cards.css',
+                [],
+                $version,
+                'all'
+            );
+
+            // Inject GeneratePress colors for frontend as well
+            add_action('wp_head', [__CLASS__, 'inject_frontend_dynamic_css']);
+        }
     }
 
     /**
@@ -266,5 +290,25 @@ class Assets {
         $b = str_pad(dechex(max(0, min(255, $b))), 2, '0', STR_PAD_LEFT);
         
         return '#' . $r . $g . $b;
+    }
+
+    /**
+     * Inject dynamic CSS with GeneratePress theme colors for frontend
+     */
+    public static function inject_frontend_dynamic_css() {
+        // Get GeneratePress theme colors
+        $colors = self::get_generatepress_colors();
+        
+        ?>
+        <style id="avs-frontend-dynamic-colors">
+            :root {
+                --gp-primary-color: <?php echo esc_attr($colors['primary']); ?>;
+                --gp-accent-color: <?php echo esc_attr($colors['accent']); ?>;
+                --gp-text-color: <?php echo esc_attr($colors['text']); ?>;
+                --gp-link-color: <?php echo esc_attr($colors['link']); ?>;
+                --gp-link-hover-color: <?php echo esc_attr($colors['link_hover']); ?>;
+            }
+        </style>
+        <?php
     }
 }

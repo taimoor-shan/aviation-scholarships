@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Aviation Scholarships
  * Description: Registers the Scholarship CPT and Aviation Taxonomies.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Muhammad
  */
 

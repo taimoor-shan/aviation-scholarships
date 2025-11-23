@@ -34,6 +34,10 @@ function render_scholarship_card($post_id) {
     $elig       = get_field('sch_eligibility', $post_id);
     $location   = get_field('sch_location', $post_id);
     $link       = get_field('sch_link', $post_id);
+    $gpa        = get_field('sch_gpa', $post_id);
+    $affiliation = get_field('sch_affiliation', $post_id);
+    $age        = get_field('sch_age', $post_id);
+    $college_program = get_field('sch_college_program', $post_id);
 
     $category   = wp_get_post_terms($post_id, 'sch_category');
     $licenses   = wp_get_post_terms($post_id, 'license_type');
@@ -82,19 +86,57 @@ function render_scholarship_card($post_id) {
                     <div class="avs-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></div>
                 </div>
             </div>
+
             <div class="avs-detail-item">
                 <div class="avs-detail-content">
                     <div class="avs-detail-label">Awards</div>
                     <div class="avs-detail-value"><?= esc_html($awards ?: '1'); ?></div>
                 </div>
             </div>
-        </div>
-        <div class="avs-detail-item">
+
+            <div class="avs-detail-item">
                 <div class="avs-detail-content">
                     <div class="avs-detail-label">Location</div>
                     <div class="avs-detail-value"><?= esc_html($location ?: 'Any'); ?></div>
                 </div>
             </div>
+
+            <?php if ($gpa) : ?>
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">CGPA</div>
+                    <div class="avs-detail-value"><?= esc_html($gpa); ?></div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($affiliation) : ?>
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">Affiliation</div>
+                    <div class="avs-detail-value"><?= esc_html($affiliation); ?></div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($age) : ?>
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">Age</div>
+                    <div class="avs-detail-value"><?= esc_html($age); ?></div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($college_program) : ?>
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <div class="avs-detail-label">College Program</div>
+                    <div class="avs-detail-value"><?= esc_html($college_program); ?></div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
         <!-- License Types Section -->
         <?php if (!empty($licenses)) : ?>
             <div class="avs-licenses-section">

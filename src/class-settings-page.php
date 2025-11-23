@@ -63,28 +63,42 @@ class Settings_Page {
         <div class="wrap">
             <h1>Aviation Scholarships — Import Settings</h1>
 
-            <?php if ($import_done && $summary): ?>
-                <div class="notice notice-success is-dismissible avs-import-summary">
+            <?php 
+            // Handle manual dismissal
+            if (isset($_GET['dismiss_summary'])) {
+                delete_transient('avs_last_import_summary');
+                wp_redirect(admin_url('edit.php?post_type=scholarship&page=avs-import-settings'));
+                exit;
+            }
+            
+            // Show summary if exists (regardless of import_done flag)
+            if ($summary): 
+            ?>
+                <div class="notice notice-<?php echo !empty($summary['errors']) ? 'warning' : 'success'; ?> avs-import-summary" style="position: relative;">
                     <p><strong>Import Completed!</strong></p>
                     <ul>
                         <li>Created: <?php echo intval($summary['created'] ?? 0); ?></li>
                         <li>Updated: <?php echo intval($summary['updated'] ?? 0); ?></li>
                         <?php if (!empty($summary['errors'])): ?>
-                            <li>Errors: <?php echo count($summary['errors']); ?></li>
+                            <li style="color: #d63638;">Errors: <?php echo count($summary['errors']); ?></li>
                         <?php endif; ?>
                     </ul>
                     <?php if (!empty($summary['errors'])): ?>
-                        <details>
-                            <summary>View Errors</summary>
-                            <ul>
-                                <?php foreach (array_slice($summary['errors'], 0, 10) as $err): ?>
-                                    <li><code><?php echo esc_html($err); ?></code></li>
-                                <?php endforeach; ?>
-                            </ul>
+                        <details open>
+                            <summary style="cursor: pointer; font-weight: 600; color: #d63638;">View All Errors (<?php echo count($summary['errors']); ?> total)</summary>
+                            <div style="max-height: 300px; overflow-y: auto; margin-top: 10px; padding: 10px; background: #fff; border: 1px solid #ddd;">
+                                <ul style="margin: 0;">
+                                    <?php foreach ($summary['errors'] as $err): ?>
+                                        <li><code><?php echo esc_html($err); ?></code></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </details>
                     <?php endif; ?>
+                    <p>
+                        <a href="<?php echo esc_url(add_query_arg('dismiss_summary', '1')); ?>" class="button button-small">Clear This Summary</a>
+                    </p>
                 </div>
-                <?php delete_transient('avs_last_import_summary'); ?>
             <?php endif; ?>
 
             <form method="post" action="options.php" class="avs-section">

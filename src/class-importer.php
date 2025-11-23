@@ -77,7 +77,7 @@ class Importer
         }
 
         // redirect back to settings with a flag and small summary in transient
-        set_transient('avs_last_import_summary', $result, 60);
+        set_transient('avs_last_import_summary', $result, 300); // 5 minutes
         wp_redirect(admin_url('edit.php?post_type=scholarship&page=avs-import-settings&import_done=1'));
         exit;
     }
@@ -432,6 +432,7 @@ class Importer
 
     /**
      * Create a stable source id from title/link/deadline
+     * Now uses title + deadline for uniqueness (link alone causes duplicates)
      *
      * @param string $title
      * @param string $link
@@ -440,7 +441,8 @@ class Importer
      */
     protected function make_source_id($title, $link = '', $deadline_raw = '')
     {
-        $seed = trim($link) !== '' ? $link : ($title . '|' . $deadline_raw);
+        // Use title + deadline as the unique identifier (link alone causes too many duplicates)
+        $seed = trim($title) . '|' . trim($deadline_raw);
         return md5(mb_strtolower(trim($seed)));
     }
 

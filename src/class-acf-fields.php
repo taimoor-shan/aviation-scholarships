@@ -24,6 +24,7 @@ class ACF_Fields {
                         'display_format' => 'Y-m-d',
                         'return_format' => 'Y-m-d',
                         'first_day' => 1,
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Number of Awards
@@ -34,6 +35,7 @@ class ACF_Fields {
                         'type' => 'number',
                         'min' => 0,
                         'step' => 1,
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Maximum Amount
@@ -44,6 +46,7 @@ class ACF_Fields {
                         'type' => 'number',
                         'min' => 0,
                         'step' => 100,
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // GPA (NEW)
@@ -52,6 +55,7 @@ class ACF_Fields {
                         'label' => 'Required GPA',
                         'name' => 'sch_gpa',
                         'type' => 'text',
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Affiliation (NEW)
@@ -60,6 +64,7 @@ class ACF_Fields {
                         'label' => 'Affiliation',
                         'name' => 'sch_affiliation',
                         'type' => 'text',
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Age Requirement (NEW)
@@ -68,6 +73,7 @@ class ACF_Fields {
                         'label' => 'Age Requirement',
                         'name' => 'sch_age',
                         'type' => 'text',
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // College Program
@@ -76,6 +82,7 @@ class ACF_Fields {
                         'label' => 'College Program?',
                         'name' => 'sch_college_program',
                         'type' => 'text',
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Eligibility
@@ -90,6 +97,7 @@ class ACF_Fields {
                             'minority' => 'Minority',
                         ),
                         'default_value' => 'every',
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Location
@@ -98,6 +106,7 @@ class ACF_Fields {
                         'label' => 'Location',
                         'name' => 'sch_location',
                         'type' => 'text',
+                        'wrapper' => array('width' => '33.33'),
                     ),
 
                     // Application Link
@@ -106,6 +115,7 @@ class ACF_Fields {
                         'label' => 'Application Link',
                         'name' => 'sch_link',
                         'type' => 'url',
+                        'wrapper' => array('width' => '50'),
                     ),
 
                     // Status
@@ -120,6 +130,7 @@ class ACF_Fields {
                             'discontinued' => 'Discontinued',
                         ),
                         'default_value' => 'active',
+                        'wrapper' => array('width' => '50'),
                     ),
 
                     // Source ID (hidden)

@@ -1,0 +1,519 @@
+/**
+ * Aviation Scholarships - Modal Version Styles
+ * Enhanced UI with Bootstrap Modal Integration
+ */
+
+:root {
+    --avs-primary: #00363d;
+    --avs-secondary: #015f5e;
+    --avs-accent: #02e68d;
+    --avs-slate: #f0f3f4;
+    --avs-white: #ffffff;
+    --avs-text-dark: #1a1a1a;
+    --avs-text-light: #6b7280;
+    --avs-border: #e5e7eb;
+    --avs-shadow: rgba(0, 54, 61, 0.1);
+    --avs-shadow-lg: rgba(0, 54, 61, 0.15);
+}
+
+/* ============================================
+   CARD STYLES - ESSENTIAL INFO ONLY
+   ============================================ */
+
+.avs-card-modal-version {
+    background: var(--avs-white);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--avs-shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--avs-border);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.avs-card-modal-version:hover {
+    box-shadow: 0 8px 24px var(--avs-shadow-lg);
+    transform: translateY(-4px);
+}
+
+/* Card Header */
+.avs-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.avs-category {
+    display: inline-flex;
+    align-items: center;
+}
+
+.avs-category-label {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--avs-secondary), var(--avs-primary));
+    color: var(--avs-white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.avs-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--avs-primary);
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* Amount Section */
+.avs-amount-section {
+    background: linear-gradient(135deg, var(--avs-slate) 0%, #ffffff 100%);
+    border: 2px solid var(--avs-accent);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.avs-amount-value {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--avs-primary);
+    line-height: 1;
+}
+
+.avs-currency {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--avs-secondary);
+}
+
+.avs-amount-varies {
+    font-size: 20px;
+    color: var(--avs-text-light);
+    font-weight: 600;
+}
+
+.avs-amount-label {
+    font-size: 12px;
+    color: var(--avs-text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+/* Essential Details Grid */
+.avs-details-grid.avs-essential-only {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.avs-detail-item {
+    background: var(--avs-slate);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.avs-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.avs-detail-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--avs-text-light);
+}
+
+.avs-detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--avs-primary);
+}
+
+.avs-deadline-countdown {
+    display: block;
+    font-size: 11px;
+    color: var(--avs-accent);
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+/* Dual Button Footer */
+.avs-card-footer.avs-dual-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.avs-details-btn,
+.avs-apply-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.avs-details-btn {
+    background: var(--avs-slate);
+    color: var(--avs-primary);
+    border: 2px solid var(--avs-border);
+}
+
+.avs-details-btn:hover {
+    background: var(--avs-primary);
+    color: var(--avs-white);
+    border-color: var(--avs-primary);
+    transform: translateY(-2px);
+}
+
+.avs-apply-btn {
+    background: linear-gradient(135deg, var(--avs-accent), #00d67d);
+    color: var(--avs-primary);
+    font-weight: 700;
+}
+
+.avs-apply-btn:hover {
+    background: linear-gradient(135deg, #00d67d, var(--avs-accent));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(2, 230, 141, 0.3);
+}
+
+/* ============================================
+   BOOTSTRAP MODAL CUSTOMIZATION
+   ============================================ */
+
+.avs-scholarship-modal .modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 54, 61, 0.2);
+}
+
+.avs-scholarship-modal .modal-header {
+    background: linear-gradient(135deg, var(--avs-primary), var(--avs-secondary));
+    color: var(--avs-white);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 28px;
+    border-bottom: 3px solid var(--avs-accent);
+}
+
+.avs-modal-header-content {
+    flex: 1;
+}
+
+.avs-modal-category {
+    display: inline-block;
+    background: rgba(2, 230, 141, 0.2);
+    color: var(--avs-accent);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.avs-scholarship-modal .modal-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--avs-white);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.avs-scholarship-modal .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+.avs-scholarship-modal .btn-close:hover {
+    opacity: 1;
+}
+
+.avs-scholarship-modal .modal-body {
+    padding: 32px 28px;
+    background: var(--avs-white);
+}
+
+/* Modal Amount Section */
+.avs-modal-amount-section {
+    background: linear-gradient(135deg, var(--avs-slate), #ffffff);
+    border: 3px solid var(--avs-accent);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.avs-amount-large {
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--avs-primary);
+    line-height: 1;
+}
+
+.avs-amount-subtitle {
+    font-size: 13px;
+    color: var(--avs-text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.avs-varies {
+    font-size: 28px;
+    color: var(--avs-secondary);
+}
+
+/* Modal Details Grid */
+.avs-modal-details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.avs-modal-section {
+    background: var(--avs-slate);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.avs-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--avs-primary);
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--avs-accent);
+}
+
+.avs-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--avs-border);
+}
+
+.avs-detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.avs-detail-row .avs-detail-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--avs-text-light);
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.avs-detail-row .avs-detail-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--avs-primary);
+    text-align: right;
+}
+
+/* Badges */
+.avs-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.avs-deadline-badge {
+    background: var(--avs-accent);
+    color: var(--avs-primary);
+}
+
+.avs-status-active {
+    background: #10b981;
+    color: var(--avs-white);
+}
+
+.avs-status-expired {
+    background: #ef4444;
+    color: var(--avs-white);
+}
+
+.avs-status-discontinued {
+    background: #6b7280;
+    color: var(--avs-white);
+}
+
+/* License Badges Grid */
+.avs-licenses-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.avs-license-badge {
+    display: inline-block;
+    background: var(--avs-white);
+    border: 2px solid var(--avs-secondary);
+    color: var(--avs-secondary);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.avs-license-badge:hover {
+    background: var(--avs-secondary);
+    color: var(--avs-white);
+}
+
+/* Modal Footer */
+.avs-scholarship-modal .modal-footer {
+    background: var(--avs-slate);
+    border-radius: 0 0 20px 20px;
+    border-top: 1px solid var(--avs-border);
+    padding: 20px 28px;
+    gap: 12px;
+}
+
+.avs-modal-close {
+    background: var(--avs-white);
+    color: var(--avs-primary);
+    border: 2px solid var(--avs-border);
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.avs-modal-close:hover {
+    background: var(--avs-primary);
+    color: var(--avs-white);
+    border-color: var(--avs-primary);
+}
+
+.avs-modal-apply {
+    background: linear-gradient(135deg, var(--avs-accent), #00d67d);
+    color: var(--avs-primary);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.avs-modal-apply:hover {
+    background: linear-gradient(135deg, #00d67d, var(--avs-accent));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(2, 230, 141, 0.4);
+    color: var(--avs-primary);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .avs-card-footer.avs-dual-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .avs-details-grid.avs-essential-only {
+        grid-template-columns: 1fr;
+    }
+    
+    .avs-amount-value {
+        font-size: 28px;
+    }
+    
+    .avs-amount-large {
+        font-size: 36px;
+    }
+    
+    .avs-scholarship-modal .modal-title {
+        font-size: 20px;
+    }
+    
+    .avs-detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .avs-detail-row .avs-detail-value {
+        text-align: left;
+    }
+}
+
+@media (max-width: 576px) {
+    .avs-card-modal-version {
+        padding: 20px;
+    }
+    
+    .avs-scholarship-modal .modal-body {
+        padding: 24px 20px;
+    }
+    
+    .avs-modal-amount-section {
+        padding: 20px;
+    }
+}
+
+/* ============================================
+   GRID LAYOUT
+   ============================================ */
+
+.avs-scholarships-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    margin: 24px 0;
+}
+
+@media (max-width: 768px) {
+    .avs-scholarships-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.avs-text-capitalize {
+    text-transform: capitalize;
+}
+
+.avs-no-results {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 18px;
+    color: var(--avs-text-light);
+    background: var(--avs-slate);
+    border-radius: 12px;
+}

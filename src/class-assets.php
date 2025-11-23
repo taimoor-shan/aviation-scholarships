@@ -119,12 +119,32 @@ class Assets {
      * Enqueue frontend CSS for scholarship cards
      */
     public static function enqueue_frontend_assets() {
-        // Only load if we're displaying scholarships
-        // This will load on scholarship archives, single pages, or pages with shortcode
-        if (is_post_type_archive('scholarship') || is_singular('scholarship') || has_shortcode(get_post()->post_content ?? '', 'recent_scholarships')) {
-            $version = '1.0.0';
-            $plugin_url = plugin_dir_url(dirname(__FILE__));
+        global $post;
+        
+        // Check if we need to load assets
+        $load_regular = false;
+        $load_compact = false;
+        
+        // Check various conditions
+        if (is_post_type_archive('scholarship') || is_singular('scholarship')) {
+            $load_regular = true;
+        }
+        
+        // Check for shortcodes in post content
+        if ($post && is_a($post, 'WP_Post')) {
+            if (has_shortcode($post->post_content, 'recent_scholarships')) {
+                $load_regular = true;
+            }
+            if (has_shortcode($post->post_content, 'recent_scholarships_compact')) {
+                $load_compact = true;
+            }
+        }
+        
+        $version = '1.0.0';
+        $plugin_url = plugin_dir_url(dirname(__FILE__));
 
+        // Load regular version
+        if ($load_regular) {
             wp_enqueue_style(
                 'avs-frontend-cards',
                 $plugin_url . 'assets/css/frontend-cards.css',
@@ -133,7 +153,31 @@ class Assets {
                 'all'
             );
 
-            // Inject GeneratePress colors for frontend as well
+            // Inject GeneratePress colors for frontend
+            add_action('wp_head', [__CLASS__, 'inject_frontend_dynamic_css']);
+        }
+        
+        // Load compact version with custom modal
+        if ($load_compact) {
+            // Enqueue compact card styles (includes custom modal)
+            wp_enqueue_style(
+                'avs-frontend-cards-compact',
+                $plugin_url . 'assets/css/frontend-cards-compact.css',
+                [],
+                $version,
+                'all'
+            );
+            
+            // Enqueue custom modal JS
+            wp_enqueue_script(
+                'avs-modal-js',
+                $plugin_url . 'assets/js/modal.js',
+                [],
+                $version,
+                true
+            );
+
+            // Inject GeneratePress colors for frontend
             add_action('wp_head', [__CLASS__, 'inject_frontend_dynamic_css']);
         }
     }

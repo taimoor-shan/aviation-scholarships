@@ -7,19 +7,10 @@ class Admin_Columns {
 
     public static function init() {
 
-        // Add columns
         add_filter('manage_scholarship_posts_columns', [__CLASS__, 'add_columns']);
-
-        // Content for columns
         add_action('manage_scholarship_posts_custom_column', [__CLASS__, 'render_column'], 10, 2);
-
-        // Make columns sortable
         add_filter('manage_edit-scholarship_sortable_columns', [__CLASS__, 'sortable_columns']);
-
-        // Sorting logic
         add_action('pre_get_posts', [__CLASS__, 'handle_sorting']);
-
-        // Taxonomy dropdown filters
         add_action('restrict_manage_posts', [__CLASS__, 'filter_dropdowns']);
     }
 
@@ -29,16 +20,22 @@ class Admin_Columns {
      * -------------------------- */
     public static function add_columns($columns) {
 
-        // Move date to end
+        // Remove license types column
+        unset($columns['license_type']);
+
+        // Move date to the end
         unset($columns['date']);
 
         $columns['sch_deadline']     = 'Deadline';
         $columns['sch_max_amount']   = 'Amount';
+
+        // NEW: Awards column
+        $columns['sch_num_awards']   = 'Awards';
+
         $columns['sch_category']     = 'Category';
-        $columns['license_type']     = 'License Types';
         $columns['sch_eligibility']  = 'Eligibility';
 
-        // Add back Date
+        // Add date back
         $columns['date'] = 'Date';
 
         return $columns;
@@ -62,19 +59,14 @@ class Admin_Columns {
                 echo $amount ? '$'.number_format($amount) : '—';
                 break;
 
+            case 'sch_num_awards':
+                $awards = get_field('sch_num_awards', $post_id);
+                echo $awards !== '' ? intval($awards) : '—';
+                break;
+
             case 'sch_category':
                 $terms = get_the_terms($post_id, 'sch_category');
                 echo $terms ? esc_html($terms[0]->name) : '—';
-                break;
-
-            case 'license_type':
-                $terms = get_the_terms($post_id, 'license_type');
-                if ($terms) {
-                    $names = wp_list_pluck($terms, 'name');
-                    echo implode(', ', $names);
-                } else {
-                    echo '—';
-                }
                 break;
 
             case 'sch_eligibility':
@@ -86,12 +78,13 @@ class Admin_Columns {
 
 
     /* --------------------------
-     * 3. Make Columns Sortable
+     * 3. Sortable Columns
      * -------------------------- */
     public static function sortable_columns($columns) {
 
-        $columns['sch_deadline']   = 'sch_deadline';
-        $columns['sch_max_amount'] = 'sch_max_amount';
+        $columns['sch_deadline']     = 'sch_deadline';
+        $columns['sch_max_amount']   = 'sch_max_amount';
+        $columns['sch_num_awards']   = 'sch_num_awards';
 
         return $columns;
     }
@@ -118,7 +111,12 @@ class Admin_Columns {
             $query->set('orderby', 'meta_value_num');
         }
 
-        // Handle eligibility filter
+        if ($orderby === 'sch_num_awards') {
+            $query->set('meta_key', 'sch_num_awards');
+            $query->set('orderby', 'meta_value_num');
+        }
+
+        // handle eligibility filter
         if (isset($_GET['sch_eligibility']) && $_GET['sch_eligibility'] !== '') {
             $meta_query = $query->get('meta_query') ?: [];
             $meta_query[] = [
@@ -132,7 +130,7 @@ class Admin_Columns {
 
 
     /* --------------------------
-     * 5. Taxonomy Filter Dropdowns
+     * 5. Filters
      * -------------------------- */
     public static function filter_dropdowns() {
 
@@ -143,10 +141,7 @@ class Admin_Columns {
         // Category
         self::render_dropdown('sch_category', 'Category');
 
-        // License Types
-        self::render_dropdown('license_type', 'License Type');
-
-        // Eligibility (ACF select)
+        // Eligibility
         $selected = isset($_GET['sch_eligibility']) ? $_GET['sch_eligibility'] : '';
 
         ?>

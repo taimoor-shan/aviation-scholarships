@@ -157,24 +157,15 @@ class Assets {
             add_action('wp_head', [__CLASS__, 'inject_frontend_dynamic_css']);
         }
         
-        // Load compact version with custom modal
+        // Load compact version (uses theme's existing Bootstrap)
         if ($load_compact) {
-            // Enqueue compact card styles (includes custom modal)
+            // Enqueue compact card styles only (theme already has Bootstrap)
             wp_enqueue_style(
                 'avs-frontend-cards-compact',
                 $plugin_url . 'assets/css/frontend-cards-compact.css',
                 [],
                 $version,
                 'all'
-            );
-            
-            // Enqueue custom modal JS
-            wp_enqueue_script(
-                'avs-modal-js',
-                $plugin_url . 'assets/js/modal.js',
-                [],
-                $version,
-                true
             );
 
             // Inject GeneratePress colors for frontend

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aviation_Scholarships;
 
 if (!defined('WPINC')) {
@@ -10,7 +11,8 @@ if (!defined('WPINC')) {
  *
  * Full-featured importer: manual upload, URL pull, webhook push, and WP-CLI friendly.
  */
-class Importer {
+class Importer
+{
 
     /**
      * Option keys
@@ -28,7 +30,8 @@ class Importer {
      * Importer constructor.
      * Hooks for admin form and REST webhook registration.
      */
-    public function __construct() {
+    public function __construct()
+    {
         // load secret from settings
         $this->secret_key = get_option('avs_webhook_secret', '');
 
@@ -49,7 +52,8 @@ class Importer {
      * Admin manual import handler
      * Accepts either csv_url or csv_file upload via admin-post.php?action=avs_manual_import
      */
-    public function handle_manual_import() {
+    public function handle_manual_import()
+    {
         if (!current_user_can('manage_options')) {
             wp_die('Forbidden', 403);
         }
@@ -85,7 +89,8 @@ class Importer {
      * @param \WP_REST_Request $request
      * @return \WP_REST_Response
      */
-    public function webhook_receive(\WP_REST_Request $request) {
+    public function webhook_receive(\WP_REST_Request $request)
+    {
         $body = $request->get_json_params();
 
         if (empty($this->secret_key)) {
@@ -113,7 +118,8 @@ class Importer {
      * @param string $url
      * @return array|false
      */
-    public function import_csv_url($url) {
+    public function import_csv_url($url)
+    {
         if (empty($url)) {
             $this->write_log(['level' => 'error', 'message' => 'Empty CSV URL provided.']);
             return false;
@@ -150,7 +156,8 @@ class Importer {
      * @param string $path
      * @return array|false
      */
-    public function import_csv_file($path) {
+    public function import_csv_file($path)
+    {
         if (!file_exists($path)) {
             $this->write_log(['level' => 'error', 'message' => "CSV file not found: {$path}"]);
             return false;
@@ -172,7 +179,8 @@ class Importer {
      * @param string $path
      * @return array
      */
-    protected function parse_csv($path) {
+    protected function parse_csv($path)
+    {
         $content = file_get_contents($path);
         if ($content === false) {
             $this->write_log(['level' => 'error', 'message' => "Unable to read CSV file: {$path}"]);
@@ -226,7 +234,8 @@ class Importer {
      * @param array $rows
      * @return array summary
      */
-    protected function process_rows(array $rows) {
+    protected function process_rows(array $rows)
+    {
         $summary = ['created' => 0, 'updated' => 0, 'errors' => []];
 
         foreach ($rows as $idx => $row) {
@@ -301,6 +310,22 @@ class Importer {
                     $this->update_field_safe('sch_max_amount', $amt, $post_id);
                 }
 
+                // GPA
+                if (!empty($row['GPA'])) {
+                    $this->update_field_safe('sch_gpa', sanitize_text_field($row['GPA']), $post_id);
+                }
+
+                // Affiliation
+                if (!empty($row['Affiliation'])) {
+                    $this->update_field_safe('sch_affiliation', sanitize_text_field($row['Affiliation']), $post_id);
+                }
+
+                // Age
+                if (!empty($row['Age'])) {
+                    $this->update_field_safe('sch_age', sanitize_text_field($row['Age']), $post_id);
+                }
+
+
                 // College Program?
                 if (!empty($row['College Program?'])) {
                     $this->update_field_safe('sch_college_program', sanitize_text_field($row['College Program?']), $post_id);
@@ -334,9 +359,9 @@ class Importer {
                     }
                 }
 
-                // License types (Lic Type 1 .. Lic Type 8) -> license_type taxonomy
+                // License types (Lic Type 1 .. Lic Type 10)
                 $licenses = [];
-                for ($i = 1; $i <= 8; $i++) {
+                for ($i = 1; $i <= 10; $i++) {
                     $col = 'Lic Type ' . $i;
                     if (!empty($row[$col])) {
                         $licenses[] = trim($row[$col]);
@@ -352,7 +377,6 @@ class Importer {
 
                 // Raw JSON for debugging
                 $this->update_field_safe('sch_raw', wp_json_encode($row), $post_id);
-
             } catch (\Exception $ex) {
                 $summary['errors'][] = "Row {$idx}: Exception - " . $ex->getMessage();
                 $this->write_log(['level' => 'error', 'message' => "Row {$idx} exception: " . $ex->getMessage()]);
@@ -380,7 +404,8 @@ class Importer {
      * @param string $value
      * @return string '' if failed or Y-m-d
      */
-    protected function normalize_date($value) {
+    protected function normalize_date($value)
+    {
         $value = trim((string)$value);
         if ($value === '') return '';
 
@@ -413,7 +438,8 @@ class Importer {
      * @param string $deadline_raw
      * @return string
      */
-    protected function make_source_id($title, $link = '', $deadline_raw = '') {
+    protected function make_source_id($title, $link = '', $deadline_raw = '')
+    {
         $seed = trim($link) !== '' ? $link : ($title . '|' . $deadline_raw);
         return md5(mb_strtolower(trim($seed)));
     }
@@ -425,7 +451,8 @@ class Importer {
      * @param string $taxonomy
      * @return array term ids
      */
-    protected function ensure_terms(array $names, $taxonomy) {
+    protected function ensure_terms(array $names, $taxonomy)
+    {
         $ids = [];
         foreach ($names as $name) {
             $name = trim($name);
@@ -455,7 +482,8 @@ class Importer {
      * @param mixed $value
      * @param int $post_id
      */
-    protected function update_field_safe($field_key, $value, $post_id) {
+    protected function update_field_safe($field_key, $value, $post_id)
+    {
         if (function_exists('update_field')) {
             update_field($field_key, $value, $post_id);
         } else {
@@ -468,7 +496,8 @@ class Importer {
      *
      * @param array $entry
      */
-    protected function write_log(array $entry) {
+    protected function write_log(array $entry)
+    {
         $logs = get_option(self::OPTION_LOGS_KEY, []);
         if (!is_array($logs)) $logs = [];
 
@@ -488,7 +517,8 @@ class Importer {
      *
      * @return array
      */
-    public function get_logs() {
+    public function get_logs()
+    {
         $logs = get_option(self::OPTION_LOGS_KEY, []);
         if (!is_array($logs)) $logs = [];
         return $logs;
@@ -499,7 +529,8 @@ class Importer {
      *
      * @return array|false
      */
-    public function run_auto_sync() {
+    public function run_auto_sync()
+    {
         $sheet_url = get_option('avs_sheet_url', '');
         if (empty($sheet_url)) {
             $this->write_log(['level' => 'warning', 'message' => 'Auto-sync enabled but no sheet URL configured.']);
@@ -513,7 +544,8 @@ class Importer {
      *
      * @return void
      */
-    public static function register_wp_cli_command() {
+    public static function register_wp_cli_command()
+    {
         if (!defined('WP_CLI') || !WP_CLI) return;
 
         \WP_CLI::add_command('aviation import-csv', function ($args) {

@@ -46,6 +46,30 @@ class ACF_Fields {
                         'step' => 100,
                     ),
 
+                    // GPA (NEW)
+                    array(
+                        'key' => 'field_sch_gpa',
+                        'label' => 'Required GPA',
+                        'name' => 'sch_gpa',
+                        'type' => 'text',
+                    ),
+
+                    // Affiliation (NEW)
+                    array(
+                        'key' => 'field_sch_affiliation',
+                        'label' => 'Affiliation',
+                        'name' => 'sch_affiliation',
+                        'type' => 'text',
+                    ),
+
+                    // Age Requirement (NEW)
+                    array(
+                        'key' => 'field_sch_age',
+                        'label' => 'Age Requirement',
+                        'name' => 'sch_age',
+                        'type' => 'text',
+                    ),
+
                     // College Program
                     array(
                         'key' => 'field_sch_college_program',
@@ -66,8 +90,6 @@ class ACF_Fields {
                             'minority' => 'Minority',
                         ),
                         'default_value' => 'every',
-                        'allow_null' => 0,
-                        'multiple' => 0,
                     ),
 
                     // Location
@@ -78,7 +100,7 @@ class ACF_Fields {
                         'type' => 'text',
                     ),
 
-                    // External Link
+                    // Application Link
                     array(
                         'key' => 'field_sch_link',
                         'label' => 'Application Link',

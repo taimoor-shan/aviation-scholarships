@@ -70,17 +70,17 @@ add_action('avs_hourly_import', 'avs_run_hourly_import');
  * Component: Helpers & Templates
  */
 
-// require_once plugin_dir_path(__FILE__) . 'src/helpers-template.php';
-
-// Load compact version with Bootstrap modal
+// Load compact card template (primary template)
 require_once plugin_dir_path(__FILE__) . 'src/helpers-template-compact.php';
 
 require_once plugin_dir_path(__FILE__) . 'src/shortcodes.php';
+require_once plugin_dir_path(__FILE__) . 'src/shortcode-all-scholarships.php';
 
 add_shortcode('recent_scholarships', 'Aviation_Scholarships\shortcode_recent_scholarships');
 add_shortcode('recent_scholarships_compact', 'Aviation_Scholarships\shortcode_recent_scholarships_compact');
 add_shortcode('closing_soon_scholarships', 'Aviation_Scholarships\shortcode_closing_soon_scholarships');
 add_shortcode('closing_soon_scholarships_compact', 'Aviation_Scholarships\shortcode_closing_soon_scholarships_compact');
+add_shortcode('all_scholarships', 'Aviation_Scholarships\shortcode_all_scholarships');
 
 
 

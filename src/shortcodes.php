@@ -38,7 +38,7 @@ function shortcode_recent_scholarships($atts) {
     ?>
     <div class="avs-scholarships-grid avs-recent-scholarships">
         <?php foreach ($scholarship_ids as $post_id) : ?>
-            <?= render_scholarship_card($post_id); ?>
+            <?= render_scholarship_card_compact($post_id); ?>
         <?php endforeach; ?>
     </div>
     <?php
@@ -136,7 +136,7 @@ function shortcode_closing_soon_scholarships($atts) {
     ?>
     <div class="avs-scholarships-grid avs-closing-soon-scholarships">
         <?php foreach ($scholarship_ids as $post_id) : ?>
-            <?= render_scholarship_card($post_id); ?>
+            <?= render_scholarship_card_compact($post_id); ?>
         <?php endforeach; ?>
     </div>
     <?php

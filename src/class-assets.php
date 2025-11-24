@@ -122,32 +122,36 @@ class Assets {
         global $post;
         
         // Check if we need to load assets
-        $load_regular = false;
-        $load_compact = false;
+        $load_assets = false;
+        $load_all_scholarships = false;
         
         // Check various conditions
         if (is_post_type_archive('scholarship') || is_singular('scholarship')) {
-            $load_regular = true;
+            $load_assets = true;
         }
         
         // Check for shortcodes in post content
         if ($post && is_a($post, 'WP_Post')) {
-            if (has_shortcode($post->post_content, 'recent_scholarships')) {
-                $load_regular = true;
+            if (has_shortcode($post->post_content, 'recent_scholarships') || 
+                has_shortcode($post->post_content, 'recent_scholarships_compact') ||
+                has_shortcode($post->post_content, 'closing_soon_scholarships') || 
+                has_shortcode($post->post_content, 'closing_soon_scholarships_compact')) {
+                $load_assets = true;
             }
-            if (has_shortcode($post->post_content, 'recent_scholarships_compact')) {
-                $load_compact = true;
+            if (has_shortcode($post->post_content, 'all_scholarships')) {
+                $load_assets = true;
+                $load_all_scholarships = true;
             }
         }
         
         $version = '1.0.0';
         $plugin_url = plugin_dir_url(dirname(__FILE__));
 
-        // Load regular version
-        if ($load_regular) {
+        // Load compact card styles (primary template)
+        if ($load_assets) {
             wp_enqueue_style(
-                'avs-frontend-cards',
-                $plugin_url . 'assets/css/frontend-cards.css',
+                'avs-frontend-cards-compact',
+                $plugin_url . 'assets/css/frontend-cards-compact.css',
                 [],
                 $version,
                 'all'
@@ -157,15 +161,22 @@ class Assets {
             add_action('wp_head', [__CLASS__, 'inject_frontend_dynamic_css']);
         }
         
-        // Load compact version (uses theme's existing Bootstrap)
-        if ($load_compact) {
-            // Enqueue compact card styles only (theme already has Bootstrap)
+        // Load all scholarships assets (filters, sorting, pagination)
+        if ($load_all_scholarships) {
             wp_enqueue_style(
-                'avs-frontend-cards-compact',
-                $plugin_url . 'assets/css/frontend-cards-compact.css',
+                'avs-all-scholarships',
+                $plugin_url . 'assets/css/all-scholarships.css',
                 [],
                 $version,
                 'all'
+            );
+            
+            wp_enqueue_script(
+                'avs-all-scholarships',
+                $plugin_url . 'assets/js/all-scholarships.js',
+                [],
+                $version,
+                true
             );
 
             // Inject GeneratePress colors for frontend

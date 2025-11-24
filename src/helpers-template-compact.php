@@ -4,25 +4,7 @@ namespace Aviation_Scholarships;
 
 if (!defined('ABSPATH')) exit;
 
-/**
- * Wrapper function to display scholarships in a grid (Compact version with Bootstrap modal)
- */
-function render_scholarships_grid_compact($scholarship_ids)
-{
-    if (empty($scholarship_ids)) {
-        return '<p class="avs-no-results">No scholarships found.</p>';
-    }
-
-    ob_start();
-?>
-    <div class="avs-scholarships-grid">
-        <?php foreach ($scholarship_ids as $post_id) : ?>
-            <?= render_scholarship_card_compact($post_id); ?>
-        <?php endforeach; ?>
-    </div>
-<?php
-    return ob_get_clean();
-}
+// Removed: render_scholarships_grid_compact() - Layout wrapping now handled by shortcode
 
 /**
  * Render a single scholarship card (Compact version with Bootstrap modal)

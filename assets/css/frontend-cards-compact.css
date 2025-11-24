@@ -39,6 +39,12 @@
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 20px 48px rgba(0, 0, 0, 0.15);
 }
 
+/* Version 2 */
+
+.avs-closing-soon-scholarships-compact .avs-scholarship-card.avs-compact {
+    background-color: var(--slate, #0071e3);
+}
+
 .avs-scholarship-card.avs-compact::before {
     content: '';
     position: absolute;
@@ -72,6 +78,10 @@
     padding:20px 22px;
     background: #f1f3f4;
     border-radius: 10px;
+}
+
+.avs-closing-soon-scholarships-compact .avs-details-grid.avs-compact-grid{
+    background-color: #ffffff;
 }
 
 @media (max-width: 480px) {

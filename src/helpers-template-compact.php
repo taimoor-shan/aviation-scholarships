@@ -38,20 +38,37 @@ function render_scholarship_card_compact($post_id)
     // Generate unique modal ID
     $modal_id = 'scholarship-modal-' . $post_id;
 
+    // Determine site_id for favorites plugin
+    global $blog_id;
+    $site_id = is_multisite() ? $blog_id : 1;
+
+    // Check if post is favorited
+    $user_repo = new \Favorites\Entities\User\UserRepository();
+    $is_favorited = $user_repo->isFavorite($post_id, $site_id);
+
+    // Get favorite count
+    $fav_count_obj = new \Favorites\Entities\Post\FavoriteCount();
+    $fav_count = $fav_count_obj->getCount($post_id, $site_id);
+
     ob_start();
 ?>
 
     <article class="avs-scholarship-card avs-compact">
         <!-- Header Section -->
         <div class="avs-card-header">
-            <?php if (!empty($category)) : ?>
-                <div class="avs-category mb-3 d-flex gap-3 justify-content-between">
+
+            <div class="avs-category mb-3 d-flex gap-3 justify-content-between">
+                <?php if (!empty($category)) : ?>
                     <span class="avs-category-label"><?= esc_html($category[0]->name); ?></span>
-                    <a href="javascript:void(0)" class="avs-fav-btn p-0">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg> 
+                <?php endif; ?>
+                <a href="javascript:void(0)" 
+                       class="avs-fav-btn simplefavorite-button p-0<?php echo $is_favorited ? ' active' : ''; ?>" 
+                       data-postid="<?php echo esc_attr($post_id); ?>" 
+                       data-siteid="<?php echo esc_attr($site_id); ?>" 
+                       data-groupid="1" 
+                       data-favoritecount="<?php echo esc_attr($fav_count); ?>">
                     </a>
-                </div>
-            <?php endif; ?>
+            </div>
             <h3 class="avs-card-title"><?= esc_html($title); ?></h3>
         </div>
         <!-- Amount Highlight -->
@@ -89,9 +106,11 @@ function render_scholarship_card_compact($post_id)
 
         <!-- Action Buttons -->
         <div class="avs-card-footer avs-dual-buttons">
-              <a href="<?= esc_url($link); ?>" target="_blank" rel="noopener noreferrer" class="avs-apply-btn">
+            <a href="<?= esc_url($link); ?>" target="_blank" rel="noopener noreferrer" class="avs-apply-btn">
                 <span>Apply Now</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M9 15L20 4m-5 0h5v5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M9 15L20 4m-5 0h5v5" />
+                </svg>
             </a>
             <button type="button" class="avs-details-btn" data-bs-toggle="modal" data-bs-target="#<?= esc_attr($modal_id); ?>">
                 <span>View Details</span>
@@ -102,7 +121,7 @@ function render_scholarship_card_compact($post_id)
                     </g>
                 </svg>
             </button>
-          
+
         </div>
     </article>
 
@@ -229,7 +248,9 @@ function render_scholarship_card_compact($post_id)
                     <button type="button" class="btn btn-secondary avs-modal-close-btn" data-bs-dismiss="modal">Close</button>
                     <a href="<?= esc_url($link); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary avs-modal-apply-btn">
                         Apply Now
-                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M9 15L20 4m-5 0h5v5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M9 15L20 4m-5 0h5v5" />
+                        </svg>
 
                     </a>
                 </div>

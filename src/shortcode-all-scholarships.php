@@ -226,7 +226,7 @@ function render_scholarship_filters($total_count) {
 
     ob_start();
     ?>
-    <div class="avs-filters-section">
+    <div class="avs-filters-section" style="background:url('<?php echo plugin_dir_url(dirname(__FILE__)); ?>assets/img/aeroplane-1.jpg') no-repeat center center; background-size: cover; background-color: var(--primary);">
         <div class="avs-filters-header">
             <h3 class="avs-filters-title">Filter Scholarships</h3>
             <button type="button" class="avs-filters-toggle" id="avs-toggle-filters">

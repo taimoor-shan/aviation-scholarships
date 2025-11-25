@@ -259,7 +259,7 @@ h6.avs-modal-section-title {
     font-size: 14px;
     color: #0e6d42;
     padding: 6px 16px;
-    border: 1.5px solid #0e6d42;
+    border: none;
     background-color: var(--slate, #dddddd);
     border-radius: 20px;
     transition: all 0.3s ease;
@@ -297,5 +297,160 @@ h6.avs-modal-section-title {
     .avs-modal-body,
     .avs-modal-footer {
         padding: 0 20px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    /* Card */
+    .avs-scholarship-card.avs-compact {
+        background: #1c1c1e;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .avs-scholarship-card.avs-compact:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 20px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .avs-closing-soon-scholarships-compact .avs-scholarship-card.avs-compact {
+        background-color: #2c2c2e;
+    }
+
+    /* Card Title */
+    .avs-card-title {
+        color: #f5f5f7;
+    }
+
+    /* Details Grid */
+    .avs-details-grid.avs-compact-grid {
+        background: #2c2c2e;
+    }
+
+    .avs-closing-soon-scholarships-compact .avs-details-grid.avs-compact-grid {
+        background-color: #3a3a3c;
+    }
+
+    /* Detail Labels & Values */
+    .avs-detail-label {
+        color: #98989d;
+    }
+
+    .avs-detail-value {
+        color: #f5f5f7;
+    }
+
+    /* Category Label */
+    .avs-category-label {
+        color: #1c1c1e;
+    }
+
+    /* Buttons */
+    .avs-details-btn {
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+
+    .avs-details-btn:hover {
+        background: rgba(10, 132, 255, 0.2);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .avs-apply-btn {
+        background: var(--secondary);
+        color: var(--white, #ffffff);
+    }
+
+    .avs-apply-btn:hover {
+        background: var(--accent);
+        color: var(--primary);
+    }
+
+    /* Modal */
+    .avs-modal-content {
+        background: #1c1c1e;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .avs-modal-header {
+        background: linear-gradient(135deg, #2c2c2e, #1c1c1e);
+        border-bottom-color: #3a3a3c;
+    }
+
+    .avs-modal-title {
+        color: #f5f5f7;
+    }
+
+    .avs-modal-body {
+        background: #1c1c1e;
+    }
+
+    h6.avs-modal-section-title {
+        color: #f5f5f7;
+    }
+
+    .avs-modal-detail-item {
+        background: #2c2c2e;
+    }
+
+    .avs-modal-detail-item:hover {
+        background: #3a3a3c;
+    }
+
+    .avs-modal-detail-label {
+        color: #98989d;
+    }
+
+    .avs-modal-detail-value {
+        color: #f5f5f7;
+    }
+
+    .avs-modal-license-tag {
+        background-color: #2c2c2e;
+        color: #30d158;
+        border: 1px solid #48484a;
+    }
+
+    .avs-modal-license-tag:hover {
+        background-color: #3a3a3c;
+    }
+
+    /* Modal Footer Buttons */
+    .modal-footer .btn-secondary {
+        background: #3a3a3c;
+        border-color: #48484a;
+        color: #f5f5f7;
+    }
+
+    .modal-footer .btn-secondary:hover {
+        background: #48484a;
+        border-color: #636366;
+    }
+
+    .modal-footer a {
+        background: var(--accent);
+        color: var(--dark-blue, #000000);
+        border: 1px solid var(--accent);
+    }
+
+    .modal-footer a:hover {
+        background: var(--accent-2);
+        border: 1px solid var(--accent-2);
+        color: var(--priamry, #000000);
+    }
+
+    /* Bootstrap Modal Close Button */
+    .btn-close {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    /* Favorite Button */
+    .avs-fav-btn {
+        color: var(--accent);
+    }
+
+    .avs-fav-btn:hover,
+    .avs-fav-btn:focus {
+        color: #0071e3;
     }
 }

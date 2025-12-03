@@ -31,14 +31,14 @@
   background: var(--primary);
   opacity: 0.95;
   z-index: -1;
-  /* mix-blend-mode: multiply; */
+  mix-blend-mode: multiply;
 }
 
 .avs-filters-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 0;
   flex-wrap: wrap;
   gap: 16px;
 }

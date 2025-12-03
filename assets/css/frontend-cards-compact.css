@@ -86,7 +86,7 @@
 
 @media (max-width: 480px) {
     .avs-details-grid.avs-compact-grid {
-        grid-template-columns: 1fr;
+        /* grid-template-columns: 1fr; */
     }
 }
 
@@ -260,8 +260,8 @@ h6.avs-modal-section-title {
 .avs-modal-license-tag {
     font-size: 14px;
     color: #0e6d42;
-    padding: 6px 16px;
-    border: none;
+    padding: 4px 16px;
+    border: 1px solid var(--primary);
     background-color: var(--slate, #dddddd);
     border-radius: 20px;
     transition: all 0.3s ease;

@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) exit;
 
 /**
  * Shortcode: [recent_scholarships count="6"]
- * Displays scholarships in a grid layout, ordered by deadline
+ * Displays scholarships in a carousel/slider layout, ordered by deadline
  */
 function shortcode_recent_scholarships($atts) {
 
@@ -33,13 +33,24 @@ function shortcode_recent_scholarships($atts) {
     }
     wp_reset_postdata();
 
-    // Layout wrapper with grid - shortcode controls the layout
+    // Layout wrapper with carousel - shortcode controls the layout
     ob_start();
     ?>
-    <div class="avs-scholarships-grid avs-recent-scholarships">
-        <?php foreach ($scholarship_ids as $post_id) : ?>
-            <?= render_scholarship_card_compact($post_id); ?>
-        <?php endforeach; ?>
+    <div class="avs-scholarships-carousel-wrapper avs-recent-scholarships">
+        <div class="swiper avs-scholarships-carousel">
+            <div class="swiper-wrapper">
+                <?php foreach ($scholarship_ids as $post_id) : ?>
+                    <div class="swiper-slide">
+                        <?= render_scholarship_card_compact($post_id); ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
     </div>
     <?php
     return ob_get_clean();
@@ -90,7 +101,7 @@ function shortcode_recent_scholarships_compact($atts) {
 
 /**
  * Shortcode: [closing_soon_scholarships count="6" days="30"]
- * Displays scholarships closing within specified days, ordered by deadline (soonest first)
+ * Displays scholarships closing within specified days in a carousel, ordered by deadline (soonest first)
  */
 function shortcode_closing_soon_scholarships($atts) {
 
@@ -131,13 +142,24 @@ function shortcode_closing_soon_scholarships($atts) {
     }
     wp_reset_postdata();
 
-    // Layout wrapper with grid - shortcode controls the layout
+    // Layout wrapper with carousel - shortcode controls the layout
     ob_start();
     ?>
-    <div class="avs-scholarships-grid avs-closing-soon-scholarships">
-        <?php foreach ($scholarship_ids as $post_id) : ?>
-            <?= render_scholarship_card_compact($post_id); ?>
-        <?php endforeach; ?>
+    <div class="avs-scholarships-carousel-wrapper avs-closing-soon-scholarships">
+        <div class="swiper avs-scholarships-carousel">
+            <div class="swiper-wrapper">
+                <?php foreach ($scholarship_ids as $post_id) : ?>
+                    <div class="swiper-slide">
+                        <?= render_scholarship_card_compact($post_id); ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
     </div>
     <?php
     return ob_get_clean();

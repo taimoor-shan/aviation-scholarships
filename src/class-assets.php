@@ -124,6 +124,7 @@ class Assets {
         // Check if we need to load assets
         $load_assets = false;
         $load_all_scholarships = false;
+        $load_carousel = false;
         
         // Check various conditions
         if (is_post_type_archive('scholarship') || is_singular('scholarship')) {
@@ -133,8 +134,11 @@ class Assets {
         // Check for shortcodes in post content
         if ($post && is_a($post, 'WP_Post')) {
             if (has_shortcode($post->post_content, 'recent_scholarships') || 
-                has_shortcode($post->post_content, 'recent_scholarships_compact') ||
-                has_shortcode($post->post_content, 'closing_soon_scholarships') || 
+                has_shortcode($post->post_content, 'closing_soon_scholarships')) {
+                $load_assets = true;
+                $load_carousel = true;
+            }
+            if (has_shortcode($post->post_content, 'recent_scholarships_compact') ||
                 has_shortcode($post->post_content, 'closing_soon_scholarships_compact')) {
                 $load_assets = true;
             }
@@ -146,6 +150,45 @@ class Assets {
         
         $version = '1.0.0';
         $plugin_url = plugin_dir_url(dirname(__FILE__));
+
+        // Load carousel library and assets if needed
+        if ($load_carousel) {
+            // Enqueue Swiper CSS from CDN
+            wp_enqueue_style(
+                'swiper-css',
+                'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
+                [],
+                '11.0.0',
+                'all'
+            );
+            
+            // Enqueue Swiper JS from CDN
+            wp_enqueue_script(
+                'swiper-js',
+                'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js',
+                [],
+                '11.0.0',
+                true
+            );
+            
+            // Enqueue carousel styles
+            wp_enqueue_style(
+                'avs-carousel',
+                $plugin_url . 'assets/css/carousel.css',
+                ['swiper-css'],
+                $version,
+                'all'
+            );
+            
+            // Enqueue carousel initialization script
+            wp_enqueue_script(
+                'avs-carousel',
+                $plugin_url . 'assets/js/carousel.js',
+                ['jquery', 'swiper-js'],
+                $version,
+                true
+            );
+        }
 
         // Load compact card styles (primary template)
         if ($load_assets) {

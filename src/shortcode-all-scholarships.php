@@ -79,6 +79,11 @@ function build_scholarship_query_args($paged, $per_page) {
     $meta_query = [];
     $tax_query = [];
 
+    // Filter: Title Search (partial match)
+    if (!empty($_GET['avs_title'])) {
+        $args['s'] = sanitize_text_field($_GET['avs_title']);
+    }
+
     // Filter: Category
     if (!empty($_GET['avs_category'])) {
         $tax_query[] = [
@@ -215,6 +220,7 @@ function render_scholarship_filters($total_count) {
     $licenses = get_terms(['taxonomy' => 'license_type', 'hide_empty' => true]);
     
     // Get current filter values
+    $current_title = isset($_GET['avs_title']) ? sanitize_text_field($_GET['avs_title']) : '';
     $current_category = isset($_GET['avs_category']) ? sanitize_text_field($_GET['avs_category']) : '';
     $current_license = isset($_GET['avs_license']) ? sanitize_text_field($_GET['avs_license']) : '';
     $current_eligibility = isset($_GET['avs_eligibility']) ? sanitize_text_field($_GET['avs_eligibility']) : 'all';
@@ -238,6 +244,13 @@ function render_scholarship_filters($total_count) {
         <form method="get" action="" class="avs-filters-form" id="avs-filters-form">
             <div class="avs-filters-grid">
                 
+                <!-- Title Search Filter -->
+                <div class="avs-filter-group">
+                    <label for="avs_title" class="avs-filter-label">Scholarship Title</label>
+                    <input type="text" name="avs_title" id="avs_title" class="avs-filter-input" 
+                           placeholder="Search by title..." value="<?= esc_attr($current_title); ?>">
+                </div>
+
                 <!-- Category Filter -->
                 <?php if (!empty($categories) && !is_wp_error($categories)) : ?>
                     <div class="avs-filter-group">

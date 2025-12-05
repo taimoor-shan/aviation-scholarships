@@ -93,11 +93,12 @@
 .avs-category-label {
     display: inline-block;
     padding: 6px 14px;
-    background: linear-gradient(135deg, var(--accent, #0071e3), var(--accent, #005bb5));
-    color: var(--primary);
+    /* background: linear-gradient(135deg, var(--accent, #0071e3), var(--accent, #005bb5)); */
+    color: var(--accent);
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
+    border: 1px solid var(--accent);
 }
 .avs-fav-btn {
     transition: all 0.3s ease;
@@ -343,7 +344,7 @@ h6.avs-modal-section-title {
 
     /* Category Label */
     .avs-category-label {
-        color: #1c1c1e;
+        color: var(--accent);
     }
 
     /* Buttons */

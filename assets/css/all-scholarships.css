@@ -47,7 +47,7 @@
   font-size: 30px;
   font-weight: 600;
   color: var(--white, #1d1d1f);
-  margin: 0;
+  margin-bottom: 2rem;
 }
 
 .avs-filters-toggle {
@@ -88,6 +88,10 @@
     display: block;
     animation: slideDown 0.3s ease;
   }
+
+  .avs-filters-title {
+  margin-bottom:0;
+}
 }
 
 /* Filters Grid */

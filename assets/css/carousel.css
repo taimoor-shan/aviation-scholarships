@@ -4,6 +4,18 @@
  */
 
 /* ==========================================
+   Modal Z-Index Fix for Carousel
+   ========================================== */
+/* Ensure modals appear above carousel and all other content */
+.modal.fade {
+    z-index: 9999 !important;
+}
+
+.modal-backdrop {
+    z-index: 9998 !important;
+}
+
+/* ==========================================
    Carousel Wrapper
    ========================================== */
 .avs-scholarships-carousel-wrapper {
@@ -18,7 +30,7 @@
    ========================================== */
 .avs-scholarships-carousel {
     width: 100%;
-    /* padding: 0 50px 50px; */
+    padding: 0 0 50px;
     /* overflow: visible;  */
 }
 
@@ -34,7 +46,7 @@
 /* Ensure scholarship cards fill the slide */
 .avs-scholarships-carousel .swiper-slide > article {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 /* ==========================================
@@ -50,18 +62,18 @@
     transition: all 0.3s ease;
 }
 
-.avs-scholarships-carousel-wrapper .swiper-button-next:hover,
+/* .avs-scholarships-carousel-wrapper .swiper-button-next:hover,
 .avs-scholarships-carousel-wrapper .swiper-button-prev:hover {
     background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transform: scale(1.1);
-}
+} */
 
 .avs-scholarships-carousel-wrapper .swiper-button-next::after,
 .avs-scholarships-carousel-wrapper .swiper-button-prev::after {
     font-size: 20px;
     font-weight: bold;
-    color: var(--gp-primary-color, #1e73be);
+    color: var(--accent, #1e73be);
 }
 
 /* Disabled state */
@@ -76,11 +88,11 @@
 
 /* Position adjustments */
 .avs-scholarships-carousel-wrapper .swiper-button-prev {
-    left: 0;
+    left: 6px;
 }
 
 .avs-scholarships-carousel-wrapper .swiper-button-next {
-    right: 0;
+    right: 6px;
 }
 
 /* ==========================================
@@ -102,7 +114,7 @@
 
 .avs-scholarships-carousel-wrapper .swiper-pagination-bullet-active {
     opacity: 1;
-    background: var(--gp-accent-color, #46b450);
+    background: var(--accent, #46b450);
     transform: scale(1.2);
 }
 
@@ -112,13 +124,13 @@
 
 /* Dynamic bullets styling */
 .avs-scholarships-carousel-wrapper .swiper-pagination-bullet-active-main {
-    transform: scale(1.3);
+    transform: none;
 }
 
 .avs-scholarships-carousel-wrapper .swiper-pagination-bullet-active-prev,
 .avs-scholarships-carousel-wrapper .swiper-pagination-bullet-active-next {
-    transform: scale(1.1);
-    opacity: 0.6;
+    transform: none;
+    opacity: 1;
 }
 
 /* ==========================================
@@ -163,12 +175,12 @@
 @media (prefers-color-scheme: dark) {
     .avs-scholarships-carousel-wrapper .swiper-button-next,
     .avs-scholarships-carousel-wrapper .swiper-button-prev {
-        background: rgba(40, 40, 40, 0.95);
+        background: var(--secondary);
     }
     
     .avs-scholarships-carousel-wrapper .swiper-button-next:hover,
     .avs-scholarships-carousel-wrapper .swiper-button-prev:hover {
-        background: rgba(50, 50, 50, 1);
+        background: var(--primary);
     }
     
     .avs-scholarships-carousel-wrapper .swiper-button-next::after,
@@ -177,11 +189,11 @@
     }
     
     .avs-scholarships-carousel-wrapper .swiper-pagination-bullet {
-        background: rgba(255, 255, 255, 0.5);
+        background: var(--primary);
     }
     
     .avs-scholarships-carousel-wrapper .swiper-pagination-bullet-active {
-        background: rgba(255, 255, 255, 0.9);
+        background: var(--accent);
     }
 }
 

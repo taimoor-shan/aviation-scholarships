@@ -34,10 +34,10 @@
     animation: fadeInUp 0.6s ease-out;
 }
 
-.avs-scholarship-card.avs-compact:hover {
+/* .avs-scholarship-card.avs-compact:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 20px 48px rgba(0, 0, 0, 0.15);
-}
+} */
 
 /* Version 2 */
 
@@ -93,8 +93,8 @@
 .avs-category-label {
     display: inline-block;
     padding: 6px 14px;
-    /* background: linear-gradient(135deg, var(--accent, #0071e3), var(--accent, #005bb5)); */
-    color: var(--accent);
+    background: linear-gradient(135deg, var(--accent, #0071e3), var(--accent, #005bb5));
+    color: var(--primary);
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
@@ -132,14 +132,14 @@
 .avs-card-footer.avs-dual-buttons {
     margin-top: auto;
     padding-top: 8px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 12px;
 }
 
 @media (max-width: 480px) {
     .avs-card-footer.avs-dual-buttons {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
 }
 
@@ -152,14 +152,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 5px;
     width: 100%;
     padding: 10px 16px;
     background: transparent;
     color: var(--secondary, #0071e3);
     border: 2px solid var(--secondary, #0071e3);
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.2;
     font-weight: 500;
     text-decoration: none;
@@ -308,12 +308,12 @@ h6.avs-modal-section-title {
     /* Card */
     .avs-scholarship-card.avs-compact {
         background: #1c1c1e;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 10px 15px rgba(0, 0, 0, 0.2);
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 10px 15px rgba(0, 0, 0, 0.2); */
     }
 
-    .avs-scholarship-card.avs-compact:hover {
+    /* .avs-scholarship-card.avs-compact:hover {
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 20px 48px rgba(0, 0, 0, 0.3);
-    }
+    } */
 
     .avs-closing-soon-scholarships-compact .avs-scholarship-card.avs-compact {
         background-color: #2c2c2e;
@@ -344,7 +344,7 @@ h6.avs-modal-section-title {
 
     /* Category Label */
     .avs-category-label {
-        color: var(--accent);
+        color: #000000;
     }
 
     /* Buttons */
@@ -354,9 +354,9 @@ h6.avs-modal-section-title {
     }
 
     .avs-details-btn:hover {
-        background: rgba(10, 132, 255, 0.2);
+        background: var(--accent);
         border-color: var(--accent);
-        color: var(--accent);
+        color: var(--primary);
     }
 
     .avs-apply-btn {

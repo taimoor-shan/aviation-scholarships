@@ -41,7 +41,7 @@ function shortcode_recent_scholarships($atts) {
             <div class="swiper-wrapper">
                 <?php foreach ($scholarship_ids as $post_id) : ?>
                     <div class="swiper-slide">
-                        <?= render_scholarship_card_compact($post_id); ?>
+                        <?= render_scholarship_card_compact($post_id, false); // Don't include modal in carousel ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -52,6 +52,11 @@ function shortcode_recent_scholarships($atts) {
             <div class="swiper-pagination"></div>
         </div>
     </div>
+    
+    <!-- Modals rendered outside carousel for proper overlay -->
+    <?php foreach ($scholarship_ids as $post_id) : ?>
+        <?= render_scholarship_modal($post_id); ?>
+    <?php endforeach; ?>
     <?php
     return ob_get_clean();
 }
@@ -150,7 +155,7 @@ function shortcode_closing_soon_scholarships($atts) {
             <div class="swiper-wrapper">
                 <?php foreach ($scholarship_ids as $post_id) : ?>
                     <div class="swiper-slide">
-                        <?= render_scholarship_card_compact($post_id); ?>
+                        <?= render_scholarship_card_compact($post_id, false); // Don't include modal in carousel ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -161,6 +166,11 @@ function shortcode_closing_soon_scholarships($atts) {
             <div class="swiper-pagination"></div>
         </div>
     </div>
+    
+    <!-- Modals rendered outside carousel for proper overlay -->
+    <?php foreach ($scholarship_ids as $post_id) : ?>
+        <?= render_scholarship_modal($post_id); ?>
+    <?php endforeach; ?>
     <?php
     return ob_get_clean();
 }

@@ -95,6 +95,7 @@ class ACF_Fields {
                             'every' => 'Everyone',
                             'female' => 'Female Only',
                             'minority' => 'Minority',
+                            'financial_need' => 'Demonstrated Financial Need',
                         ),
                         'default_value' => 'every',
                         'wrapper' => array('width' => '33.33'),

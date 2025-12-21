@@ -54,17 +54,24 @@ class Importer
      */
     public function handle_manual_import()
     {
+        error_log('AVS: handle_manual_import() called');
+        error_log('AVS: POST action = ' . (isset($_POST['action']) ? $_POST['action'] : 'not set'));
+        
         if (!current_user_can('manage_options')) {
             wp_die('Forbidden', 403);
         }
 
         // nonce check (if present)
         if (isset($_POST['_wpnonce']) && !wp_verify_nonce($_POST['_wpnonce'], 'avs_manual_import')) {
+            error_log('AVS: handle_manual_import() - nonce failed');
             wp_die('Invalid nonce', 403);
         }
 
         $csv_url = isset($_POST['csv_url']) ? esc_url_raw(trim($_POST['csv_url'])) : '';
         $file = isset($_FILES['csv_file']) ? $_FILES['csv_file'] : null;
+        
+        error_log('AVS: handle_manual_import() - csv_url: ' . $csv_url);
+        error_log('AVS: handle_manual_import() - file provided: ' . ($file && isset($file['error']) && $file['error'] === UPLOAD_ERR_OK ? 'yes' : 'no'));
 
         $result = false;
         if ($file && isset($file['error']) && $file['error'] === UPLOAD_ERR_OK) {
@@ -73,7 +80,12 @@ class Importer
         } elseif ($csv_url) {
             $result = $this->import_csv_url($csv_url);
         } else {
+            // No CSV provided - show error and redirect
             $this->write_log(['level' => 'error', 'message' => 'No CSV provided for manual import.']);
+            error_log('AVS: handle_manual_import() - no CSV provided');
+            set_transient('avs_import_error', 'Please provide either a CSV URL or upload a CSV file.', 300);
+            wp_redirect(admin_url('edit.php?post_type=scholarship&page=avs-import-settings'));
+            exit;
         }
 
         // redirect back to settings with a flag and small summary in transient

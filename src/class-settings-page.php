@@ -69,11 +69,22 @@ class Settings_Page {
             // Show test email notification
             if (isset($_GET['test_email'])) {
                 $test_result = $_GET['test_email'];
+                $test_email_to = isset($_GET['test_email_to']) ? urldecode($_GET['test_email_to']) : get_option('admin_email');
+                
                 if ($test_result === 'success') {
-                    echo '<div class="notice notice-success is-dismissible"><p><strong>Test email sent successfully!</strong> Check your inbox at ' . esc_html(get_option('admin_email')) . '</p></div>';
+                    echo '<div class="notice notice-success is-dismissible"><p><strong>Test email sent successfully!</strong> Check your inbox at ' . esc_html($test_email_to) . '</p></div>';
+                } elseif ($test_result === 'invalid') {
+                    echo '<div class="notice notice-error is-dismissible"><p><strong>Invalid email address.</strong> Please enter a valid email address.</p></div>';
                 } else {
                     echo '<div class="notice notice-error is-dismissible"><p><strong>Failed to send test email.</strong> Please check your email configuration.</p></div>';
                 }
+            }
+            
+            // Show import error if exists
+            $import_error = get_transient('avs_import_error');
+            if ($import_error) {
+                echo '<div class="notice notice-error is-dismissible"><p><strong>Import Error:</strong> ' . esc_html($import_error) . '</p></div>';
+                delete_transient('avs_import_error');
             }
             
             // Handle manual dismissal
@@ -222,13 +233,29 @@ class Settings_Page {
                            onclick="return confirm('This will manually trigger the reminder check process. Continue?');">
                             Run Reminder Check Now
                         </a>
-                        
-                        <a href="<?php echo esc_url(admin_url('admin-post.php?action=avs_send_test_email')); ?>" 
-                           class="button button-secondary"
-                           onclick="return confirm('This will send a test email to your admin email address. Continue?');">
-                            Send Test Email
-                        </a>
                     </p>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: #fff; border: 1px solid #ccd0d4;">
+                        <h4 style="margin-top: 0;">Send Test Email</h4>
+                        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin: 0;">
+                            <?php wp_nonce_field('avs_send_test_email_nonce'); ?>
+                            <input type="hidden" name="action" value="avs_send_test_email" />
+                            <p>
+                                <label for="test_email_address">Email Address:</label><br>
+                                <input type="email" 
+                                       id="test_email_address" 
+                                       name="test_email_address" 
+                                       value="<?php echo esc_attr(get_option('admin_email')); ?>" 
+                                       required 
+                                       style="width: 300px;" 
+                                       placeholder="recipient@example.com">
+                            </p>
+                            <p>
+                                <button type="submit" class="button button-secondary">Send Test Email</button>
+                                <span class="description" style="margin-left: 10px;">A sample reminder email will be sent to this address.</span>
+                            </p>
+                        </form>
+                    </div>
                 </div>
                 <?php
             }
@@ -306,23 +333,49 @@ class Settings_Page {
        Handle test email sending
     ------------------------------ */
     public static function handle_test_email() {
+        // Log that this handler was called
+        error_log('AVS: handle_test_email() called');
+        
         // Security check
         if (!current_user_can('manage_options')) {
+            error_log('AVS: handle_test_email() - unauthorized user');
             wp_die('Unauthorized');
+        }
+
+        // Verify nonce
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'avs_send_test_email_nonce')) {
+            error_log('AVS: handle_test_email() - nonce verification failed');
+            wp_die('Security check failed');
+        }
+
+        // Get and validate email address
+        $to = isset($_POST['test_email_address']) ? sanitize_email($_POST['test_email_address']) : '';
+        error_log('AVS: handle_test_email() - email address: ' . $to);
+        
+        if (!is_email($to)) {
+            error_log('AVS: handle_test_email() - invalid email');
+            wp_redirect(add_query_arg(array(
+                'page' => 'avs-import-settings',
+                'test_email' => 'invalid'
+            ), admin_url('edit.php?post_type=scholarship')));
+            exit;
         }
 
         // Send test email
         if (class_exists('Aviation_Scholarships\\Reminder_Email')) {
+            error_log('AVS: handle_test_email() - sending email');
             $email_handler = new \Aviation_Scholarships\Reminder_Email();
-            $to = get_option('admin_email');
             $sent = $email_handler->send_test_email($to);
+            error_log('AVS: handle_test_email() - email sent: ' . ($sent ? 'true' : 'false'));
 
             // Redirect back with result
             wp_redirect(add_query_arg(array(
                 'page' => 'avs-import-settings',
-                'test_email' => $sent ? 'success' : 'failed'
+                'test_email' => $sent ? 'success' : 'failed',
+                'test_email_to' => urlencode($to)
             ), admin_url('edit.php?post_type=scholarship')));
         } else {
+            error_log('AVS: handle_test_email() - Reminder_Email class not found');
             wp_redirect(add_query_arg(array(
                 'page' => 'avs-import-settings',
                 'test_email' => 'failed'

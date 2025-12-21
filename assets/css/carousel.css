@@ -21,8 +21,8 @@
 .avs-scholarships-carousel-wrapper {
     position: relative;
     width: 100%;
-    padding: 20px 0;
-    margin: 40px 0;
+    padding:0;
+    margin: 0;
 }
 
 /* ==========================================
@@ -30,7 +30,7 @@
    ========================================== */
 .avs-scholarships-carousel {
     width: 100%;
-    padding: 0 0 50px;
+    padding: 10px 10px 50px;
     /* overflow: visible;  */
 }
 
@@ -54,9 +54,9 @@
    ========================================== */
 .avs-scholarships-carousel-wrapper .swiper-button-next,
 .avs-scholarships-carousel-wrapper .swiper-button-prev {
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.95);
+    width: 40px;
+    height: 40px;
+    background: var(--primary, #1e73be);
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
@@ -88,11 +88,11 @@
 
 /* Position adjustments */
 .avs-scholarships-carousel-wrapper .swiper-button-prev {
-    left: 6px;
+    left: 0px;
 }
 
 .avs-scholarships-carousel-wrapper .swiper-button-next {
-    right: 6px;
+    right: 0px;
 }
 
 /* ==========================================
@@ -107,7 +107,7 @@
 .avs-scholarships-carousel-wrapper .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
-    background: var(--gp-primary-color, #1e73be);
+    background: var(--primary, #1e73be);
     opacity: 0.3;
     transition: all 0.3s ease;
 }
@@ -210,13 +210,12 @@
    ========================================== */
 .avs-scholarships-carousel-wrapper .swiper-button-next:focus,
 .avs-scholarships-carousel-wrapper .swiper-button-prev:focus {
-    outline: 2px solid var(--gp-accent-color, #46b450);
-    outline-offset: 2px;
+    outline: none;
 }
 
 .avs-scholarships-carousel-wrapper .swiper-pagination-bullet:focus {
-    outline: 2px solid var(--gp-accent-color, #46b450);
-    outline-offset: 2px;
+    outline: none;
+  
 }
 
 /* ==========================================

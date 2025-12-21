@@ -65,13 +65,13 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
                 <?php if (!empty($category)) : ?>
                     <span class="avs-category-label"><?= esc_html($category[0]->name); ?></span>
                 <?php endif; ?>
-                <a href="javascript:void(0)" 
-                       class="avs-fav-btn simplefavorite-button p-0<?php echo $is_favorited ? ' active' : ''; ?>" 
-                       data-postid="<?php echo esc_attr($post_id); ?>" 
-                       data-siteid="<?php echo esc_attr($site_id); ?>" 
-                       data-groupid="1" 
-                       data-favoritecount="<?php echo esc_attr($fav_count); ?>">
-                    </a>
+                <a href="javascript:void(0)"
+                    class="avs-fav-btn simplefavorite-button p-0<?php echo $is_favorited ? ' active' : ''; ?>"
+                    data-postid="<?php echo esc_attr($post_id); ?>"
+                    data-siteid="<?php echo esc_attr($site_id); ?>"
+                    data-groupid="1"
+                    data-favoritecount="<?php echo esc_attr($fav_count); ?>">
+                </a>
             </div>
             <h3 class="avs-card-title"><?= esc_html($title); ?></h3>
         </div>
@@ -130,138 +130,139 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
     </article>
 
     <?php if ($include_modal) : ?>
-    <!-- Bootstrap Modal for Detailed Information -->
-    <div class="modal fade" id="<?= esc_attr($modal_id); ?>" tabindex="-1" aria-labelledby="<?= esc_attr($modal_id); ?>Label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content avs-modal-content">
-                <div class="modal-header avs-modal-header">
-                    <h5 class="modal-title avs-modal-title" id="<?= esc_attr($modal_id); ?>Label">
-                        <?= esc_html($title); ?>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body avs-modal-body">
-
-                    <!-- Summary Section -->
-                    <div class="avs-modal-summary">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="avs-modal-detail-item">
-                                    <div class="avs-modal-detail-label">Maximum Award</div>
-                                    <div class="avs-modal-detail-value">
-                                        <?php if ($amount) : ?>
-                                            $<?= number_format($amount); ?>
-                                        <?php else : ?>
-                                            Varies
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="avs-modal-detail-item">
-                                    <div class="avs-modal-detail-label">Deadline</div>
-                                    <div class="avs-modal-detail-value"><?= esc_html($deadline_formatted); ?></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="avs-modal-detail-item">
-                                    <div class="avs-modal-detail-label">Number of Awards</div>
-                                    <div class="avs-modal-detail-value"><?= esc_html($awards ?: '1'); ?></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="avs-modal-detail-item">
-                                    <div class="avs-modal-detail-label">Location</div>
-                                    <div class="avs-modal-detail-value"><?= esc_html($location ?: 'Any'); ?></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="avs-modal-detail-item">
-                                    <div class="avs-modal-detail-label">Eligibility</div>
-                                    <div class="avs-modal-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></div>
-                                </div>
-                            </div>
-                            <?php if (!empty($category)) : ?>
-                                <div class="col-md-6">
-                                    <div class="avs-modal-detail-item">
-                                        <div class="avs-modal-detail-label">Category</div>
-                                        <div class="avs-modal-detail-value"><?= esc_html($category[0]->name); ?></div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+        <!-- Bootstrap Modal for Detailed Information -->
+        <div class="modal fade" id="<?= esc_attr($modal_id); ?>" tabindex="-1" aria-labelledby="<?= esc_attr($modal_id); ?>Label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content avs-modal-content">
+                    <div class="modal-header avs-modal-header">
+                        <h5 class="modal-title avs-modal-title" id="<?= esc_attr($modal_id); ?>Label">
+                            <?= esc_html($title); ?>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body avs-modal-body">
 
-                    <!-- Additional Details Section -->
-                    <?php if ($gpa || $affiliation || $age || $college_program) : ?>
-                        <div class="avs-modal-section">
-                            <h6 class="avs-modal-section-title">Additional Requirements:</h6>
-                            <div class="row g-3">
-                                <?php if ($gpa) : ?>
-                                    <div class="col-md-6">
-                                        <div class="avs-modal-detail-item">
-                                            <div class="avs-modal-detail-label">Minimum CGPA</div>
-                                            <div class="avs-modal-detail-value"><?= esc_html($gpa); ?></div>
+                        <!-- Summary Section -->
+                        <div class="">
+                            <div class="row g-3 avs-modal-summary">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="avs-modal-detail-item">
+                                        <div class="avs-modal-detail-label">Maximum Award</div>
+                                        <div class="avs-modal-detail-value">
+                                            <?php if ($amount) : ?>
+                                                $<?= number_format($amount); ?>
+                                            <?php else : ?>
+                                                Varies
+                                            <?php endif; ?>
                                         </div>
                                     </div>
-                                <?php endif; ?>
-
-                                <?php if ($affiliation) : ?>
-                                    <div class="col-md-6">
-                                        <div class="avs-modal-detail-item">
-                                            <div class="avs-modal-detail-label">Affiliation</div>
-                                            <div class="avs-modal-detail-value"><?= esc_html($affiliation); ?></div>
-                                        </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="avs-modal-detail-item">
+                                        <div class="avs-modal-detail-label">Deadline</div>
+                                        <div class="avs-modal-detail-value"><?= esc_html($deadline_formatted); ?></div>
                                     </div>
-                                <?php endif; ?>
-
-                                <?php if ($age) : ?>
-                                    <div class="col-md-6">
-                                        <div class="avs-modal-detail-item">
-                                            <div class="avs-modal-detail-label">Age Requirement</div>
-                                            <div class="avs-modal-detail-value"><?= esc_html($age); ?></div>
-                                        </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="avs-modal-detail-item">
+                                        <div class="avs-modal-detail-label">Number of Awards</div>
+                                        <div class="avs-modal-detail-value"><?= esc_html($awards ?: '1'); ?></div>
                                     </div>
-                                <?php endif; ?>
-
-                                <?php if ($college_program) : ?>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="avs-modal-detail-item">
+                                        <div class="avs-modal-detail-label">Location</div>
+                                        <div class="avs-modal-detail-value"><?= esc_html($location ?: 'Any'); ?></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="avs-modal-detail-item">
+                                        <div class="avs-modal-detail-label">Eligibility</div>
+                                        <div class="avs-modal-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></div>
+                                    </div>
+                                </div>
+                                <?php if (!empty($category)) : ?>
                                     <div class="col-md-6">
                                         <div class="avs-modal-detail-item">
-                                            <div class="avs-modal-detail-label">College Program</div>
-                                            <div class="avs-modal-detail-value"><?= esc_html($college_program); ?></div>
+                                            <div class="avs-modal-detail-label">Category</div>
+                                            <div class="avs-modal-detail-value"><?= esc_html($category[0]->name); ?></div>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                             </div>
                         </div>
-                    <?php endif; ?>
 
-                    <!-- License Types Section -->
-                    <?php if (!empty($licenses)) : ?>
-                        <div class="avs-modal-section">
-                            <h6 class="avs-modal-section-title">Accepted License Types:</h6>
-                            <div class="avs-modal-licenses">
-                                <?php foreach ($licenses as $lic) : ?>
-                                    <span class="avs-modal-license-tag"><?= esc_html($lic->name); ?></span>
-                                <?php endforeach; ?>
+                        <!-- Additional Details Section -->
+                        <?php if ($gpa || $affiliation || $age || $college_program) : ?>
+                            <div class="avs-modal-section">
+                                <h6 class="avs-modal-section-title">Additional Requirements:</h6>
+                                <div class="row g-3 avs-modal-req">
+                                    <?php if ($college_program) : ?>
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="avs-modal-detail-item">
+                                                <div class="avs-modal-detail-label">College Program</div>
+                                                <div class="avs-modal-detail-value"><?= esc_html($college_program); ?></div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ($gpa) : ?>
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="avs-modal-detail-item">
+                                                <div class="avs-modal-detail-label">Minimum CGPA</div>
+                                                <div class="avs-modal-detail-value"><?= esc_html($gpa); ?></div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($affiliation) : ?>
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="avs-modal-detail-item">
+                                                <div class="avs-modal-detail-label">Affiliation</div>
+                                                <div class="avs-modal-detail-value"><?= esc_html($affiliation); ?></div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($age) : ?>
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="avs-modal-detail-item">
+                                                <div class="avs-modal-detail-label">Age Requirement</div>
+                                                <div class="avs-modal-detail-value"><?= esc_html($age); ?></div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    
+                                </div>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
-                </div>
-                <div class="modal-footer avs-modal-footer">
-                    <button type="button" class="btn btn-secondary avs-modal-close-btn" data-bs-dismiss="modal">Close</button>
-                    <a href="<?= esc_url($link); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary avs-modal-apply-btn">
-                        Apply Now
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M9 15L20 4m-5 0h5v5" />
-                        </svg>
+                        <!-- License Types Section -->
+                        <?php if (!empty($licenses)) : ?>
+                            <div class="avs-modal-section">
+                                <h6 class="avs-modal-section-title">Accepted License Types:</h6>
+                                <div class="avs-modal-licenses">
+                                    <?php foreach ($licenses as $lic) : ?>
+                                        <span class="avs-modal-license-tag"><?= esc_html($lic->name); ?></span>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
-                    </a>
+                    </div>
+                    <div class="modal-footer avs-modal-footer">
+                        <button type="button" class="btn btn-secondary avs-modal-close-btn" data-bs-dismiss="modal">Close</button>
+                        <a href="<?= esc_url($link); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary avs-modal-apply-btn">
+                            Apply Now
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5M9 15L20 4m-5 0h5v5" />
+                            </svg>
+
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
 <?php
@@ -290,7 +291,7 @@ function render_scholarship_modal($post_id)
     $college_program = get_field('sch_college_program', $post_id);
     $category   = wp_get_post_terms($post_id, 'sch_category');
     $licenses   = wp_get_post_terms($post_id, 'license_type');
-    
+
     $deadline_formatted = $deadline ? date('M j, Y', strtotime($deadline)) : 'N/A';
     $modal_id = 'scholarship-modal-' . $post_id;
 
@@ -309,9 +310,9 @@ function render_scholarship_modal($post_id)
                 <div class="modal-body avs-modal-body">
 
                     <!-- Summary Section -->
-                    <div class="avs-modal-summary">
-                        <div class="row g-3">
-                            <div class="col-md-6">
+                    <div class="">
+                        <div class="row g-3 avs-modal-summary">
+                            <div class="col-md-6 col-lg-4">
                                 <div class="avs-modal-detail-item">
                                     <div class="avs-modal-detail-label">Maximum Award</div>
                                     <div class="avs-modal-detail-value">
@@ -323,32 +324,32 @@ function render_scholarship_modal($post_id)
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-4">
                                 <div class="avs-modal-detail-item">
                                     <div class="avs-modal-detail-label">Deadline</div>
                                     <div class="avs-modal-detail-value"><?= esc_html($deadline_formatted); ?></div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-4">
                                 <div class="avs-modal-detail-item">
                                     <div class="avs-modal-detail-label">Number of Awards</div>
                                     <div class="avs-modal-detail-value"><?= esc_html($awards ?: '1'); ?></div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-4">
                                 <div class="avs-modal-detail-item">
                                     <div class="avs-modal-detail-label">Location</div>
                                     <div class="avs-modal-detail-value"><?= esc_html($location ?: 'Any'); ?></div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-4">
                                 <div class="avs-modal-detail-item">
                                     <div class="avs-modal-detail-label">Eligibility</div>
                                     <div class="avs-modal-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></div>
                                 </div>
                             </div>
                             <?php if (!empty($category)) : ?>
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-lg-4">
                                     <div class="avs-modal-detail-item">
                                         <div class="avs-modal-detail-label">Category</div>
                                         <div class="avs-modal-detail-value"><?= esc_html($category[0]->name); ?></div>
@@ -361,10 +362,18 @@ function render_scholarship_modal($post_id)
                     <!-- Additional Details Section -->
                     <?php if ($gpa || $affiliation || $age || $college_program) : ?>
                         <div class="avs-modal-section">
-                            <h6 class="avs-modal-section-title">Additional Requirements:</h6>
-                            <div class="row g-3">
+                            <h6 class="avs-modal-section-title mb-3 mb-lg-4">Additional Requirements:</h6>
+                            <div class="row g-3 avs-modal-req">
+                                 <?php if ($college_program) : ?>
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="avs-modal-detail-item">
+                                            <div class="avs-modal-detail-label">College Program</div>
+                                            <div class="avs-modal-detail-value"><?= esc_html($college_program); ?></div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                                 <?php if ($gpa) : ?>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 col-lg-4">
                                         <div class="avs-modal-detail-item">
                                             <div class="avs-modal-detail-label">Minimum CGPA</div>
                                             <div class="avs-modal-detail-value"><?= esc_html($gpa); ?></div>
@@ -373,7 +382,7 @@ function render_scholarship_modal($post_id)
                                 <?php endif; ?>
 
                                 <?php if ($affiliation) : ?>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 col-lg-4">
                                         <div class="avs-modal-detail-item">
                                             <div class="avs-modal-detail-label">Affiliation</div>
                                             <div class="avs-modal-detail-value"><?= esc_html($affiliation); ?></div>
@@ -382,7 +391,7 @@ function render_scholarship_modal($post_id)
                                 <?php endif; ?>
 
                                 <?php if ($age) : ?>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 col-lg-4">
                                         <div class="avs-modal-detail-item">
                                             <div class="avs-modal-detail-label">Age Requirement</div>
                                             <div class="avs-modal-detail-value"><?= esc_html($age); ?></div>
@@ -390,14 +399,7 @@ function render_scholarship_modal($post_id)
                                     </div>
                                 <?php endif; ?>
 
-                                <?php if ($college_program) : ?>
-                                    <div class="col-md-6">
-                                        <div class="avs-modal-detail-item">
-                                            <div class="avs-modal-detail-label">College Program</div>
-                                            <div class="avs-modal-detail-value"><?= esc_html($college_program); ?></div>
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
+                               
                             </div>
                         </div>
                     <?php endif; ?>

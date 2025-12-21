@@ -93,13 +93,47 @@
 .avs-category-label {
     display: inline-block;
     padding: 6px 14px;
-    background: linear-gradient(135deg, var(--accent, #0071e3), var(--accent, #005bb5));
-    color: var(--primary);
+    background: transparent;
+    color: var(--accent);
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
     border: 1px solid var(--accent);
 }
+
+/* Status Badge Styles */
+.avs-status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid;
+}
+
+/* Status: Active */
+.avs-status-active {
+    background: linear-gradient(135deg, #34c759, #30d158);
+    color: #000000;
+    border-color: #34c759;
+}
+
+/* Status: Expired */
+.avs-status-expired {
+    background: linear-gradient(135deg, #ff9500, #ff9f0a);
+    color: #ffffff;
+    border-color: #ff9500;
+}
+
+/* Status: Discontinued */
+.avs-status-discontinued {
+    background: linear-gradient(135deg, #ff3b30, #ff453a);
+    color: #ffffff;
+    border-color: #ff3b30;
+}
+
 .avs-fav-btn {
     transition: all 0.3s ease;
     color: var(--accent, #0071e3);
@@ -353,7 +387,23 @@ h6.avs-modal-section-title {
 
     /* Category Label */
     .avs-category-label {
-        color: #000000;
+        color: var(--accent);
+    }
+
+    /* Status Badges in Dark Mode */
+    .avs-status-active {
+        background: linear-gradient(135deg, #30d158, #32d760);
+        border-color: #30d158;
+    }
+
+    .avs-status-expired {
+        background: linear-gradient(135deg, #ff9f0a, #ffa714);
+        border-color: #ff9f0a;
+    }
+
+    .avs-status-discontinued {
+        background: linear-gradient(135deg, #ff453a, #ff4f44);
+        border-color: #ff453a;
     }
 
     /* Buttons */

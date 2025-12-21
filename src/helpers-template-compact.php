@@ -26,6 +26,7 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
     $elig       = get_field('sch_eligibility', $post_id);
     $location   = get_field('sch_location', $post_id);
     $link       = get_field('sch_link', $post_id);
+    $status     = get_field('sch_status', $post_id) ?: 'active'; // Default to active if not set
 
     // Detailed fields for modal
     $gpa        = get_field('sch_gpa', $post_id);
@@ -62,9 +63,14 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
         <div class="avs-card-header">
 
             <div class="avs-category mb-3 d-flex gap-3 justify-content-between">
-                <?php if (!empty($category)) : ?>
-                    <span class="avs-category-label"><?= esc_html($category[0]->name); ?></span>
-                <?php endif; ?>
+                <div class="d-flex gap-2 align-items-center">
+                    <?php if ($status) : ?>
+                        <span class="avs-status-badge avs-status-<?= esc_attr($status); ?>"><?= esc_html(ucfirst($status)); ?></span>
+                    <?php endif; ?>
+                    <?php if (!empty($category)) : ?>
+                        <span class="avs-category-label"><?= esc_html($category[0]->name); ?></span>
+                    <?php endif; ?>
+                </div>
                 <a href="javascript:void(0)"
                     class="avs-fav-btn simplefavorite-button p-0<?php echo $is_favorited ? ' active' : ''; ?>"
                     data-postid="<?php echo esc_attr($post_id); ?>"
@@ -285,6 +291,7 @@ function render_scholarship_modal($post_id)
     $elig       = get_field('sch_eligibility', $post_id);
     $location   = get_field('sch_location', $post_id);
     $link       = get_field('sch_link', $post_id);
+    $status     = get_field('sch_status', $post_id) ?: 'active'; // Default to active if not set
     $gpa        = get_field('sch_gpa', $post_id);
     $affiliation = get_field('sch_affiliation', $post_id);
     $age        = get_field('sch_age', $post_id);

@@ -280,7 +280,6 @@ function render_scholarship_filters($total_count) {
                         </select>
                     </div>
                 <?php endif; ?>
-
                 <!-- Eligibility Filter -->
                 <div class="avs-filter-group">
                     <label for="avs_eligibility" class="avs-filter-label">Eligibility</label>
@@ -288,17 +287,16 @@ function render_scholarship_filters($total_count) {
                         <option value="all" <?= selected($current_eligibility, 'all', false); ?>>All</option>
                         <option value="every" <?= selected($current_eligibility, 'every', false); ?>>Everyone</option>
                         <option value="female" <?= selected($current_eligibility, 'female', false); ?>>Female Only</option>
+                        <option value="financial_need" <?= selected($current_eligibility, 'financial_need', false); ?>>Demonstrated Financial Need</option>
                         <option value="minority" <?= selected($current_eligibility, 'minority', false); ?>>Minority</option>
                     </select>
                 </div>
-
                 <!-- Location Filter -->
                 <div class="avs-filter-group">
                     <label for="avs_location" class="avs-filter-label">Location</label>
                     <input type="text" name="avs_location" id="avs_location" class="avs-filter-input" 
                            placeholder="Enter location..." value="<?= esc_attr($current_location); ?>">
                 </div>
-
                 <!-- Amount Range -->
                 <div class="avs-filter-group">
                     <label class="avs-filter-label">Award Amount</label>
@@ -310,7 +308,6 @@ function render_scholarship_filters($total_count) {
                                placeholder="Max $" min="0" step="1000" value="<?= esc_attr($current_max_amount); ?>">
                     </div>
                 </div>
-
                 <!-- Deadline Range -->
                 <div class="avs-filter-group">
                     <label class="avs-filter-label">Deadline Range</label>
@@ -322,7 +319,6 @@ function render_scholarship_filters($total_count) {
                                value="<?= esc_attr($current_deadline_to); ?>">
                     </div>
                 </div>
-
             </div>
 
             <!-- Filter Actions -->

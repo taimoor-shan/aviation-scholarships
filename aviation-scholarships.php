@@ -14,12 +14,21 @@ require_once plugin_dir_path(__FILE__) . 'src/class-register-taxonomies.php';
 require_once plugin_dir_path(__FILE__) . 'src/class-importer.php';
 require_once plugin_dir_path(__FILE__) . 'src/class-assets.php';
 
+// Load email reminder system classes
+require_once plugin_dir_path(__FILE__) . 'src/class-reminder-database.php';
+require_once plugin_dir_path(__FILE__) . 'src/class-reminder-email.php';
+require_once plugin_dir_path(__FILE__) . 'src/class-reminder-manager.php';
+
 // Activation: flush rewrites
 function avs_activate_plugin() {
     // Register CPT & taxonomies first
     \Aviation_Scholarships\Register_Scholarship::register();
     \Aviation_Scholarships\Register_Taxonomies::register();
     flush_rewrite_rules();
+    
+    // Create reminder database table
+    $reminder_db = new \Aviation_Scholarships\Reminder_Database();
+    $reminder_db->create_table();
 }
 register_activation_hook(__FILE__, 'avs_activate_plugin');
 
@@ -50,6 +59,9 @@ add_action('init', ['Aviation_Scholarships\Admin_Columns', 'init']);
 
 // Assets (CSS & JS)
 add_action('init', ['Aviation_Scholarships\Assets', 'init']);
+
+// Initialize Email Reminder System
+add_action('init', ['Aviation_Scholarships\Reminder_Manager', 'init']);
 
 
 // Load CLI class (only in CLI mode)
@@ -104,6 +116,43 @@ function avs_manage_cron() {
 function avs_run_hourly_import() {
     $importer = new \Aviation_Scholarships\Importer();
     $importer->run_auto_sync();
+}
+
+/**
+ * Hook to clean up reminder records when a scholarship is deleted
+ */
+add_action('before_delete_post', 'avs_cleanup_scholarship_reminders');
+function avs_cleanup_scholarship_reminders($post_id) {
+    if (get_post_type($post_id) === 'scholarship') {
+        $reminder_db = new \Aviation_Scholarships\Reminder_Database();
+        $reminder_db->delete_scholarship_reminders($post_id);
+    }
+}
+
+/**
+ * Hook to reset reminders when scholarship deadline is updated
+ */
+add_action('acf/save_post', 'avs_reset_reminders_on_deadline_change', 20);
+function avs_reset_reminders_on_deadline_change($post_id) {
+    // Only for scholarship post type
+    if (get_post_type($post_id) !== 'scholarship') {
+        return;
+    }
+    
+    // Check if deadline was modified
+    $new_deadline = get_field('sch_deadline', $post_id);
+    $old_deadline = get_post_meta($post_id, '_old_deadline', true);
+    
+    if ($new_deadline && $old_deadline && $new_deadline !== $old_deadline) {
+        // Deadline changed, reset reminders for this scholarship
+        $manager = new \Aviation_Scholarships\Reminder_Manager();
+        $manager->reset_scholarship_reminders($post_id);
+    }
+    
+    // Store current deadline for next comparison
+    if ($new_deadline) {
+        update_post_meta($post_id, '_old_deadline', $new_deadline);
+    }
 }
 
 

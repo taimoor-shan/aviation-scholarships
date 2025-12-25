@@ -29,9 +29,10 @@
      * Validate import form before submission
      */
     function initImportFormValidation() {
-        $('form[action*="admin-post.php"]').on('submit', function(e) {
-            var csvUrl = $('input[name="csv_url"]').val();
-            var csvFile = $('input[name="csv_file"]')[0];
+        // Only target the CSV import form, not all admin-post forms
+        $('form[action*="admin-post.php"] input[name="action"][value="avs_manual_import"]').closest('form').on('submit', function(e) {
+            var csvUrl = $(this).find('input[name="csv_url"]').val();
+            var csvFile = $(this).find('input[name="csv_file"]')[0];
             
             // Check if either URL or file is provided
             if (!csvUrl && (!csvFile || !csvFile.files.length)) {
@@ -101,9 +102,8 @@
      * Add confirmation for large imports
      */
     function initImportConfirmation() {
-        $('button[type="submit"]').filter(function() {
-            return $(this).closest('form[action*="admin-post.php"]').length > 0;
-        }).on('click', function(e) {
+        // Only target the CSV import form submit button
+        $('form[action*="admin-post.php"] input[name="action"][value="avs_manual_import"]').closest('form').find('button[type="submit"]').on('click', function(e) {
             var $form = $(this).closest('form');
             var csvFile = $form.find('input[name="csv_file"]')[0];
             

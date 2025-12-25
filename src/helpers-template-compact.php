@@ -71,13 +71,7 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
                         <span class="avs-category-label"><?= esc_html($category[0]->name); ?></span>
                     <?php endif; ?>
                 </div>
-                <a href="javascript:void(0)"
-                    class="avs-fav-btn simplefavorite-button p-0<?php echo $is_favorited ? ' active' : ''; ?>"
-                    data-postid="<?php echo esc_attr($post_id); ?>"
-                    data-siteid="<?php echo esc_attr($site_id); ?>"
-                    data-groupid="1"
-                    data-favoritecount="<?php echo esc_attr($fav_count); ?>">
-                </a>
+                <?php echo do_shortcode('[favorite_button post_id="' . $post_id . '" site_id="' . $site_id . '"]'); ?>
             </div>
             <h3 class="avs-card-title"><?= esc_html($title); ?></h3>
         </div>
@@ -86,32 +80,38 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
 
         <!-- Essential Details Only -->
         <div class="avs-details-grid avs-compact-grid">
-            <div class="avs-detail-item">
-                <div class="avs-detail-content">
-                    <p class="avs-detail-label">Maximum Award</p>
-                    <?php if ($amount) : ?>
+            <?php if ($amount) : ?>
+                <div class="avs-detail-item">
+                    <div class="avs-detail-content">
+                        <p class="avs-detail-label">Maximum Award</p>
                         <p class="avs-detail-value">$<?= number_format($amount); ?></p>
-                    <?php endif; ?>
+                    </div>
                 </div>
-            </div>
-            <div class="avs-detail-item">
-                <div class="avs-detail-content">
-                    <p class="avs-detail-label">Awards</p>
-                    <p class="avs-detail-value"><?= esc_html($awards ?: '1'); ?></p>
+            <?php endif; ?>
+            <?php if ($awards) : ?>
+                <div class="avs-detail-item">
+                    <div class="avs-detail-content">
+                        <p class="avs-detail-label">Awards</p>
+                        <p class="avs-detail-value"><?= esc_html($awards); ?></p>
+                    </div>
                 </div>
-            </div>
-            <div class="avs-detail-item">
-                <div class="avs-detail-content">
-                    <p class="avs-detail-label">Deadline</p>
-                    <p class="avs-detail-value"><?= esc_html($deadline_formatted); ?></p>
+            <?php endif; ?>
+            <?php if ($deadline && $deadline_formatted !== 'N/A') : ?>
+                <div class="avs-detail-item">
+                    <div class="avs-detail-content">
+                        <p class="avs-detail-label">Deadline</p>
+                        <p class="avs-detail-value"><?= esc_html($deadline_formatted); ?></p>
+                    </div>
                 </div>
-            </div>
-            <div class="avs-detail-item">
-                <div class="avs-detail-content">
-                    <p class="avs-detail-label">Gender</p>
-                    <p class="avs-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></p>
+            <?php endif; ?>
+            <?php if ($elig) : ?>
+                <div class="avs-detail-item">
+                    <div class="avs-detail-content">
+                        <p class="avs-detail-label">Gender</p>
+                        <p class="avs-detail-value avs-text-capitalize"><?= esc_html(ucfirst($elig)); ?></p>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Action Buttons -->

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Aviation Scholarships
  * Description: Registers the Scholarship CPT and Aviation Taxonomies.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Muhammad
  */
 
@@ -18,6 +18,7 @@ require_once plugin_dir_path(__FILE__) . 'src/class-assets.php';
 require_once plugin_dir_path(__FILE__) . 'src/class-reminder-database.php';
 require_once plugin_dir_path(__FILE__) . 'src/class-reminder-email.php';
 require_once plugin_dir_path(__FILE__) . 'src/class-reminder-manager.php';
+require_once plugin_dir_path(__FILE__) . 'src/class-reminder-dashboard.php';
 
 // Activation: flush rewrites
 function avs_activate_plugin() {
@@ -73,6 +74,40 @@ if (defined('WP_CLI') && WP_CLI) {
 // Admin Settings
 require_once plugin_dir_path(__FILE__) . 'src/class-settings-page.php';
 add_action('init', ['Aviation_Scholarships\Settings_Page', 'init']);
+
+// Email Reminder Dashboard
+add_action('init', ['Aviation_Scholarships\Reminder_Dashboard', 'init']);
+
+// Disable Gutenberg editor for scholarship post type
+add_filter('use_block_editor_for_post_type', 'avs_disable_gutenberg_for_scholarships', 10, 2);
+function avs_disable_gutenberg_for_scholarships($use_block_editor, $post_type) {
+    if ($post_type === 'scholarship') {
+        return false;
+    }
+    return $use_block_editor;
+}
+
+// Remove content editor completely for scholarship post type (title + ACF fields only)
+add_action('init', 'avs_remove_editor_for_scholarships');
+function avs_remove_editor_for_scholarships() {
+    remove_post_type_support('scholarship', 'editor');
+}
+
+// Prevent GeneratePress/GenerateBlocks from interfering with scholarship post type
+add_filter('generateblocks_post_types', 'avs_disable_generateblocks_for_scholarships');
+function avs_disable_generateblocks_for_scholarships($post_types) {
+    if (($key = array_search('scholarship', $post_types)) !== false) {
+        unset($post_types[$key]);
+    }
+    return $post_types;
+}
+
+// Remove GeneratePress Layout meta box from scholarship edit screen
+add_action('add_meta_boxes', 'avs_remove_generatepress_metaboxes', 99);
+function avs_remove_generatepress_metaboxes() {
+    remove_meta_box('generate_layout_options_meta_box', 'scholarship', 'side');
+    remove_meta_box('generateblocks_custom_css', 'scholarship', 'normal');
+}
 
 // Auto-sync cron management
 add_action('admin_init', 'avs_manage_cron');

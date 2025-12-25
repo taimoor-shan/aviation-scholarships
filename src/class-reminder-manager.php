@@ -133,17 +133,24 @@ class Reminder_Manager {
         // Check if enabled
         if (get_option('avs_email_reminders_enabled', 'yes') !== 'yes') {
             error_log("AVS Reminder: Email reminders are disabled");
-            return;
+            return array(
+                'success' => false,
+                'message' => 'Email reminders are currently disabled in settings',
+                'emails_sent' => 0,
+                'breakdown' => array('30_days' => 0, '15_days' => 0, '5_days' => 0)
+            );
         }
 
         error_log("AVS Reminder: Starting daily reminder process");
         $start_time = microtime(true);
         $total_sent = 0;
+        $breakdown = array();
 
         // Process each reminder interval
         foreach ($this->reminder_intervals as $days) {
             $reminder_type = "{$days}_days";
             $sent_count = $this->process_reminder_interval($days, $reminder_type);
+            $breakdown[$reminder_type] = $sent_count;
             $total_sent += $sent_count;
 
             // Check batch limit
@@ -158,6 +165,15 @@ class Reminder_Manager {
 
         // Update last run timestamp
         update_option('avs_reminders_last_run', current_time('mysql'));
+        
+        // Return detailed results for user feedback
+        return array(
+            'success' => true,
+            'emails_sent' => $total_sent,
+            'breakdown' => $breakdown,
+            'duration' => $duration,
+            'message' => $this->format_results_message($total_sent, $breakdown)
+        );
     }
 
     /**
@@ -182,6 +198,9 @@ class Reminder_Manager {
         }
 
         error_log("AVS Reminder: Found " . count($scholarships) . " scholarships for {$reminder_type}");
+        if (!empty($scholarships)) {
+            error_log("AVS Reminder: Scholarship IDs: " . implode(', ', $scholarships));
+        }
 
         // For each scholarship, find users who favorited it
         foreach ($scholarships as $scholarship_id) {
@@ -261,35 +280,54 @@ class Reminder_Manager {
     private function get_users_who_favorited($scholarship_id) {
         global $wpdb;
 
+        error_log("AVS Reminder: Looking for users who favorited scholarship ID: {$scholarship_id}");
+
         // Query user meta for favorites containing this scholarship
-        // The Favorites plugin stores favorites as serialized arrays
+        // The Favorites plugin stores favorites as serialized arrays with integer values
+        // Search for both string and integer representations
         $users = $wpdb->get_col($wpdb->prepare(
-            "SELECT user_id 
+            "SELECT DISTINCT user_id 
             FROM {$wpdb->usermeta} 
             WHERE meta_key = 'simplefavorites' 
-            AND meta_value LIKE %s",
+            AND (meta_value LIKE %s OR meta_value LIKE %s)",
+            '%i:' . intval($scholarship_id) . ';%',
             '%"' . $scholarship_id . '"%'
         ));
+
+        error_log("AVS Reminder: Database query found " . count($users) . " potential user(s)");
 
         // Additional validation: check if scholarship is actually in their favorites
         $validated_users = array();
         foreach ($users as $user_id) {
             $favorites = get_user_meta($user_id, 'simplefavorites', true);
             
+            error_log("AVS Reminder: Checking user ID {$user_id}, favorites data type: " . gettype($favorites));
+            
             if (!is_array($favorites)) {
+                error_log("AVS Reminder: User {$user_id} - favorites is not an array, skipping");
                 continue;
             }
 
+            error_log("AVS Reminder: User {$user_id} - favorites structure: " . print_r($favorites, true));
+
             // Check if this scholarship is in their favorites
             // Favorites plugin stores site_id as key, posts as array
+            $found = false;
             foreach ($favorites as $site_favorites) {
                 if (isset($site_favorites['posts']) && in_array($scholarship_id, $site_favorites['posts'])) {
                     $validated_users[] = $user_id;
+                    $found = true;
+                    error_log("AVS Reminder: User {$user_id} - VALIDATED! Scholarship {$scholarship_id} found in their favorites");
                     break;
                 }
             }
+            
+            if (!$found) {
+                error_log("AVS Reminder: User {$user_id} - scholarship {$scholarship_id} NOT found in favorites array");
+            }
         }
 
+        error_log("AVS Reminder: Total validated users: " . count($validated_users));
         return $validated_users;
     }
 
@@ -338,16 +376,64 @@ class Reminder_Manager {
         if (!current_user_can('manage_options')) {
             wp_die('Unauthorized');
         }
+        
+        // Verify nonce for security
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'avs_test_reminder_nonce')) {
+            wp_die('Security check failed');
+        }
 
-        // Run the reminder process
-        $this->process_daily_reminders();
+        // Run the reminder process and get results
+        $results = $this->process_daily_reminders();
+        
+        // Prepare redirect parameters based on results
+        $redirect_args = array(
+            'page' => 'avs-reminder-dashboard',
+            'tab' => 'testing'
+        );
+        
+        if ($results['success']) {
+            $redirect_args['reminder_test'] = 'success';
+            $redirect_args['emails_sent'] = $results['emails_sent'];
+            $redirect_args['duration'] = $results['duration'];
+            // Encode breakdown as JSON for detailed display
+            $redirect_args['breakdown'] = urlencode(json_encode($results['breakdown']));
+        } else {
+            $redirect_args['reminder_test'] = 'disabled';
+        }
 
-        // Redirect back with success message
-        wp_redirect(add_query_arg(array(
-            'page' => 'aviation-scholarships-settings',
-            'reminder_test' => 'success'
-        ), admin_url('admin.php')));
+        // Redirect back to dashboard with results
+        wp_redirect(add_query_arg(
+            $redirect_args,
+            admin_url('edit.php?post_type=scholarship')
+        ));
         exit;
+    }
+    
+    /**
+     * Format results message for user display
+     * 
+     * @param int $total_sent Total emails sent
+     * @param array $breakdown Breakdown by reminder type
+     * @return string Formatted message
+     */
+    private function format_results_message($total_sent, $breakdown) {
+        if ($total_sent === 0) {
+            return 'No reminder emails were sent. This could mean: (1) No scholarships have deadlines 30, 15, or 5 days from today, (2) No users have favorited scholarships with upcoming deadlines, or (3) All due reminders have already been sent.';
+        }
+        
+        $parts = array();
+        if (isset($breakdown['30_days']) && $breakdown['30_days'] > 0) {
+            $parts[] = "{$breakdown['30_days']} for 30-day deadline";
+        }
+        if (isset($breakdown['15_days']) && $breakdown['15_days'] > 0) {
+            $parts[] = "{$breakdown['15_days']} for 15-day deadline";
+        }
+        if (isset($breakdown['5_days']) && $breakdown['5_days'] > 0) {
+            $parts[] = "{$breakdown['5_days']} for 5-day deadline";
+        }
+        
+        $breakdown_text = !empty($parts) ? ' (' . implode(', ', $parts) . ')' : '';
+        return "Successfully sent {$total_sent} reminder email(s){$breakdown_text}.";
     }
 
     /**

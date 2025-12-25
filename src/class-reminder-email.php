@@ -111,13 +111,13 @@ class Reminder_Email {
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #0073aa; color: white; padding: 20px; text-align: center; }
+                .header { background-color: #01605f; color: white !important; padding: 20px; text-align: center; }
                 .content { background-color: #f9f9f9; padding: 20px; }
-                .scholarship-item { background-color: white; margin-bottom: 15px; padding: 15px; border-left: 4px solid #0073aa; }
-                .scholarship-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #0073aa; }
+                .scholarship-item { background-color: white; margin-bottom: 15px; padding: 15px; border-left: 4px solid #01605f; }
+                .scholarship-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #01605f; }
                 .scholarship-meta { font-size: 14px; color: #666; margin-bottom: 5px; }
                 .deadline-highlight { color: #d63638; font-weight: bold; }
-                .cta-button { display: inline-block; background-color: #0073aa; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
+                .cta-button { display: inline-block; background-color: #01605f; color: white !important; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
                 .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
             </style>
         </head>
@@ -155,9 +155,11 @@ class Reminder_Email {
                         </div>
                         <?php endif; ?>
                         
-                        <a href="<?php echo esc_url($scholarship['permalink']); ?>" class="cta-button">
-                            <?php _e('View Details & Apply', 'aviation-scholarships'); ?>
+                        <?php if (!empty($scholarship['link'])): ?>
+                        <a href="<?php echo esc_url($scholarship['link']); ?>" class="cta-button" target="_blank" rel="noopener noreferrer">
+                            <?php _e('Apply Now', 'aviation-scholarships'); ?>
                         </a>
+                        <?php endif; ?>
                     </div>
                     <?php endforeach; ?>
                     
@@ -166,7 +168,13 @@ class Reminder_Email {
                     <p><?php _e('Make sure to prepare your application materials and submit before the deadline.', 'aviation-scholarships'); ?></p>
                     
                     <p>
-                        <a href="<?php echo esc_url(home_url('/my-account/')); ?>" class="cta-button">
+                        <?php 
+                        $user_login = $user->user_login;
+                        $dashboard_url = home_url("/user/{$user_login}/?profiletab=reminders");
+                        // Add redirect parameter for when user is not logged in
+                        $login_url = wp_login_url($dashboard_url);
+                        ?>
+                        <a href="<?php echo esc_url($login_url); ?>" class="cta-button">
                             <?php _e('View All My Saved Scholarships', 'aviation-scholarships'); ?>
                         </a>
                     </p>
@@ -231,7 +239,7 @@ class Reminder_Email {
                 'deadline_formatted' => date('F j, Y', strtotime('+30 days')),
                 'max_amount' => '$5,000',
                 'eligibility' => 'Everyone',
-                'permalink' => home_url('/scholarships/sample/')
+                'link' => 'https://example.com/apply'
             )
         );
 

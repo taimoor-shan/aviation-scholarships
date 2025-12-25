@@ -71,11 +71,9 @@
 }
 
 @media (max-width: 768px) {
-
-    .avs-filter-range {
-  flex-wrap: wrap;
-
-}
+  .avs-filter-range {
+    flex-wrap: wrap;
+  }
   .avs-filters-toggle {
     display: flex;
   }
@@ -87,11 +85,12 @@
   .avs-filters-form.active {
     display: block;
     animation: slideDown 0.3s ease;
+    margin-top: 30px;
   }
 
   .avs-filters-title {
-  margin-bottom:0;
-}
+    margin-bottom: 0;
+  }
 }
 
 /* Filters Grid */
@@ -366,7 +365,7 @@
   }
 
   .avs-filters-title {
-    color: #f5f5f7;
+    color: #ffffff;
   }
 
   .avs-filter-label {
@@ -377,7 +376,7 @@
   .avs-filters-grid .avs-filter-input {
     background: #2c2c2e;
     border-color: #48484a;
-    color: #f5f5f7 !important;
+    /* color: #f5f5f7 !important; */
   }
 
   .avs-filter-select:hover,

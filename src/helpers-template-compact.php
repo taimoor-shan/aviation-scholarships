@@ -80,14 +80,18 @@ function render_scholarship_card_compact($post_id, $include_modal = true)
 
         <!-- Essential Details Only -->
         <div class="avs-details-grid avs-compact-grid">
-            <?php if ($amount) : ?>
-                <div class="avs-detail-item">
-                    <div class="avs-detail-content">
-                        <p class="avs-detail-label">Maximum Award</p>
-                        <p class="avs-detail-value">$<?= number_format($amount); ?></p>
-                    </div>
+            <div class="avs-detail-item">
+                <div class="avs-detail-content">
+                    <p class="avs-detail-label">Maximum Award</p>
+                    <p class="avs-detail-value">
+                        <?php if ($amount) : ?>
+                            $<?= number_format($amount); ?>
+                        <?php else : ?>
+                            Unknown
+                        <?php endif; ?>
+                    </p>
                 </div>
-            <?php endif; ?>
+            </div>
             <?php if ($awards) : ?>
                 <div class="avs-detail-item">
                     <div class="avs-detail-content">
